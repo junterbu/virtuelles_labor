@@ -11,7 +11,7 @@ async function sendDataToServer(userId, data) {
     console.log(result);
 }
 
-async function getUserData(userId) {
+export async function getUserData(userId) {
     const response = await fetch(`${BACKEND_URL}/api/data/${userId}`);
     const data = await response.json();
     console.log(data);
