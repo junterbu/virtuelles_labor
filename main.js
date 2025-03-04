@@ -12,9 +12,22 @@ async function sendDataToServer(userId, data) {
 }
 
 export async function getUserData(userId) {
-    const response = await fetch(`${BACKEND_URL}/api/data/${userId}`);
-    const data = await response.json();
-    console.log(data);
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/data/${userId}`);
+        if (!response.ok) throw new Error("Fehler beim Abrufen der Daten");
+
+        const data = await response.json();
+        if (!data || typeof data !== "object") {
+            console.error("⚠️ Ungültige Datenstruktur:", data);
+            return {}; // Rückgabe eines leeren Objekts, um undefined zu vermeiden
+        }
+
+        console.log("✅ Empfangene Benutzerdaten:", data);
+        return data;
+    } catch (error) {
+        console.error("❌ Fehler beim Abrufen der Benutzerdaten:", error);
+        return {}; // Rückgabe eines leeren Objekts, um Fehler zu vermeiden
+    }
 }
 
 async function sendQuizAnswer(userId, raum, auswahl) {

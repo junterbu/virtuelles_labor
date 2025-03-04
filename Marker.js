@@ -107,10 +107,17 @@ export async function zeigeQuiz(raum) {
         return;
     }
 
-    // Überprüfen, ob der Nutzer das Quiz bereits gemacht hat
+    // Benutzer-Daten abrufen
     const userData = await getUserData(userId);
-    if (userData.beantworteteRäume && userData.beantworteteRäume.includes(raum)) {
-        console.log("Quiz wurde bereits beantwortet.");
+
+    // Sicherstellen, dass `userData.beantworteteRäume` existiert
+    if (!userData || !userData.beantworteteRäume) {
+        console.warn("⚠️ Keine beantworteten Räume gefunden, setze auf leeres Array.");
+        userData.beantworteteRäume = []; // Standardwert setzen, falls nicht vorhanden
+    }
+
+    if (userData.beantworteteRäume.includes(raum)) {
+        console.log("✅ Quiz wurde bereits beantwortet.");
         return;
     }
 
@@ -135,7 +142,6 @@ export async function zeigeQuiz(raum) {
         document.getElementById("quizContainer").style.display = "block";
     }
 }
-
 
 export async function speicherePunkte(raum, auswahl) {
     userId = localStorage.getItem("userId");
