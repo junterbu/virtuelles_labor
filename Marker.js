@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+import { getUserData } from "./main.js"; // Falls noch nicht importiert
 
 // Firestore-Instanz holen
 const db = window.firebaseDB;
@@ -98,8 +99,7 @@ function setUserId() {
 let beantworteteRäume = new Set();
 
 export async function zeigeQuiz(raum) {
-    const db = await getDatabase(); // Firestore erst laden, wenn verfügbar
-    userId = localStorage.getItem("userId");
+    const userId = localStorage.getItem("userId");
 
     if (!userId) {
         alert("Bitte zuerst eine Matrikelnummer eingeben.");
@@ -107,11 +107,11 @@ export async function zeigeQuiz(raum) {
         return;
     }
 
-    const docRef = doc(db, "quizErgebnisse", userId);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists() && docSnap.data().beantworteteRäume.includes(raum)) {
-        return; // Quiz wurde bereits für diesen Raum gemacht
+    // Überprüfen, ob der Nutzer das Quiz bereits gemacht hat
+    const userData = await getUserData(userId);
+    if (userData.beantworteteRäume && userData.beantworteteRäume.includes(raum)) {
+        console.log("Quiz wurde bereits beantwortet.");
+        return;
     }
 
     if (quizFragen[raum]) {
@@ -126,7 +126,7 @@ export async function zeigeQuiz(raum) {
             button.innerText = option;
             button.classList.add("quiz-option");
             button.addEventListener("click", async () => {
-                await speicherePunkte(raum, option);
+                await sendQuizAnswer(userId, raum, option);
                 schließeQuiz();
             });
             optionenContainer.appendChild(button);

@@ -16,3 +16,14 @@ async function getUserData(userId) {
     const data = await response.json();
     console.log(data);
 }
+
+async function sendQuizAnswer(userId, raum, auswahl) {
+    const response = await fetch(`${BACKEND_URL}/api/quiz`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, raum, auswahl })
+    });
+
+    const result = await response.json();
+    console.log("Quiz gespeichert:", result);
+}
