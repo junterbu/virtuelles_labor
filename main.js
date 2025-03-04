@@ -30,7 +30,7 @@ export async function getUserData(userId) {
     }
 }
 
-async function sendQuizAnswer(userId, raum, auswahl) {
+export async function sendQuizAnswer(userId, raum, auswahl) {
     const response = await fetch(`${BACKEND_URL}/api/quiz`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
