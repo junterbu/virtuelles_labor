@@ -14,7 +14,7 @@ async function fetchQuizPunkte(userId) {
     }
 }
 
-export function generatePDFReport(mischgutName, eimerWerte, bitumengehalt, Rohdichten, raumdichten, sieblinieCanvas) {
+export async function generatePDFReport(mischgutName, eimerWerte, bitumengehalt, Rohdichten, raumdichten, sieblinieCanvas) {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF();
     let startY = 10;
