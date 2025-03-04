@@ -31,12 +31,20 @@ export async function getUserData(userId) {
 }
 
 export async function sendQuizAnswer(userId, raum, auswahl) {
-    const response = await fetch(`${BACKEND_URL}/api/quiz`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, raum, auswahl })
-    });
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/quiz`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId, raum, auswahl })
+        });
 
-    const result = await response.json();
-    console.log("Quiz gespeichert:", result);
+        if (!response.ok) {
+            throw new Error(`Fehler beim Senden der Quiz-Antwort: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log("✅ Quiz gespeichert:", result);
+    } catch (error) {
+        console.error("❌ Fehler in sendQuizAnswer:", error);
+    }
 }
