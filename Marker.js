@@ -7,6 +7,7 @@ import { sendQuizAnswer } from "./main.js";
 const db = window.firebaseDB;
 
 
+
 // Funktion zum Erstellen eines Markers
 function createMarker(h, b, pxx, pxz, text, x, y, z, r) {
     const geometry = new THREE.PlaneGeometry(b, h);
@@ -59,14 +60,14 @@ export const quizFragen = {
     },
     "Mischer": {
         frage: "Warum ist eine Typprüfung von Asphaltmischgut notwendig?",
-        optionen: ["Um den richtigen Mischguttyp für eine Baustelle zu ermitteln", "Um die gesetzlichen Anforderungen an das Mischgut zu überprüfen", "Um die optimale Temperatur für das Mischen festzulegen", "Um den Recyclinganteil im Asphalt zu bestimmen"],
-        antwort: "Um die gesetzlichen Anforderungen an das Mischgut zu überprüfen",
+        optionen: ["Um den richtigen Mischguttyp für eine Baustelle zu ermitteln", "Um die normgemäßen Anforderungen an das Mischgut zu überprüfen", "Um die optimale Temperatur für das Mischen festzulegen", "Um den Recyclinganteil im Asphalt zu bestimmen"],
+        antwort: "Um die normgemäßen Anforderungen an das Mischgut zu überprüfen",
         punkte: 10
     },
     "Marshall": {
         frage: "Wie wird der optimale Bindemittelgehalt eines Asphaltmischguts ermittelt?",
-        optionen: ["Durch eine rechnerische Ableitung der Sieblinie", "Durch Erhitzen des Mischguts auf eine festgelegte Temperatur", "Durch Erstellen einer Polynomfunktion und Finden des Maximums", "Durch Zugabe von Bindemittel in 1%-Schritten und Sichtprüfung"],
-        antwort: "Durch Erstellen einer Polynomfunktion und Finden des Maximums",
+        optionen: ["Durch eine rechnerische Ableitung der Sieblinie", "Durch Erhitzen des Mischguts auf eine festgelegte Temperatur", "Durch Erstellen einer Polynomfunktion und Finden des Maximums der Raumdichten", "Durch Zugabe von Bindemittel in 1%-Schritten und Sichtprüfung"],
+        antwort: "Durch Erstellen einer Polynomfunktion und Finden des Maximums der Raumdichten",
         punkte: 10
     }
 };
@@ -133,10 +134,20 @@ export async function zeigeQuiz(raum) {
             const button = document.createElement("button");
             button.innerText = option;
             button.classList.add("quiz-option");
+        
             button.addEventListener("click", async () => {
+                button.style.backgroundColor = "#28a745"; // Grün als Bestätigung
+                button.style.color = "white";
+                
                 await sendQuizAnswer(userId, raum, option);
-                schließeQuiz();
+                
+                setTimeout(() => {
+                    button.style.backgroundColor = "#007bff"; // Zurück zur Standardfarbe
+                    button.style.color = "white";
+                    schließeQuiz();
+                }, 1000);
             });
+        
             optionenContainer.appendChild(button);
         });
 

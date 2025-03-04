@@ -1,9 +1,27 @@
 import { solveLinearSystem, invertMatrix, multiplyMatrixVector } from "./Marshall.js";
 import { quizPunkte, quizFragen } from "./Marker.js";
+
+const BACKEND_URL = "https://virtuelles-labor-backend.vercel.app";
+
+async function fetchQuizPunkte(userId) {
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/punkte/${userId}`);
+        const data = await response.json();
+        return data.punkte || 0;
+    } catch (error) {
+        console.error("Fehler beim Abrufen der Punkte:", error);
+        return 0;
+    }
+}
+
 export function generatePDFReport(mischgutName, eimerWerte, bitumengehalt, Rohdichten, raumdichten, sieblinieCanvas) {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF();
     let startY = 10;
+    const userId = localStorage.getItem("userId") || "Gast";
+
+    // Quiz-Punkte abrufen
+    const quizPunkte = await fetchQuizPunkte(userId);
 
     // Titel
     pdf.setFontSize(20);
