@@ -204,7 +204,6 @@ document.getElementById('percentRange').addEventListener('input', function() {
 
 });
 
-
 let sieblinien = {
     "Füller" : [76.5, 95, 99.8, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
     "0/2" : [5.89, 9.92, 20.44, 35.26, 53.57, 87.24, 100, 100, 100, 100, 100, 100, 100],
