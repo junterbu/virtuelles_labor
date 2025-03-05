@@ -136,7 +136,7 @@ export async function zeigeQuiz(raum) {
             button.classList.add("quiz-option");
         
             button.addEventListener("click", async () => {
-                button.style.backgroundColor = "#0000ff"; // Grün als Bestätigung
+                button.style.backgroundColor = "#0000ff"; // Dunkelblau als Bestätigung
                 button.style.color = "white";
                 
                 await sendQuizAnswer(userId, raum, option);
