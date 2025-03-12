@@ -133,17 +133,15 @@ function animate() {
             }
         }
 
-        if (action) {
-            const currentFrame = action.time * FPS;
-            if (2 >= currentFrame >= 1) {
-                async function starteDoppelQuiz(raum1, raum2) {
-                    await zeigeQuiz(raum1);
-                    await new Promise(resolve => setTimeout(resolve, 500)); // Kleine Pause
-                    await zeigeQuiz(raum2);
-                }
     
-                starteDoppelQuiz("ÖNORM EN 12697-8", "NaBe")
+        if (!animationCompleted) {
+            async function starteDoppelQuiz(raum1, raum2) {
+                await zeigeQuiz(raum1);
+                await new Promise(resolve => setTimeout(resolve, 500)); // Kleine Pause
+                await zeigeQuiz(raum2);
             }
+
+            starteDoppelQuiz("ÖNORM EN 12697-8", "NaBe")
         }
 
         if (action && action.isRunning() === false && !animationCompleted) {
@@ -217,7 +215,9 @@ function animate() {
             
             
             const sieblinieCanvas = document.querySelector("#canvas-container canvas"); // Sieblinie Canvas abrufen
-            generatePDFReport(selectedMix, eimerWerte, bitumengehalt, Rohdichten, raumdichten, canvasSieblinie);
+            if (actionCompleted) {
+                generatePDFReport(selectedMix, eimerWerte, bitumengehalt, Rohdichten, raumdichten, canvasSieblinie);
+            }
             texture.needsUpdate = true; // Textur aktualisieren
         }
     }
