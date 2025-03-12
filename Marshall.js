@@ -8,6 +8,7 @@ import { canvasSieblinie, eimerWerte, selectedMix } from './Gesteinsraum.js';
 import { isMobileDevice } from './Allgemeines.js';
 import { generatePDFReport } from './Excel.js';
 import { zeigeQuiz } from './Marker.js';
+import { getUserQuizFragen } from './main.js';
 
 const inputEvent = isMobileDevice() ? 'touchstart' : 'click';
 
