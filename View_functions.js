@@ -162,6 +162,7 @@ export function goToLager() {
 export function fromLagertoProberaum() {
     currentRoom = "Gesteinsraum";
     zeigeQuiz("Gesteinsraum");
+    zeigeQuiz("Mischer")
 
     //Wegpunkte vom Lager ins Labor
     const points = [
