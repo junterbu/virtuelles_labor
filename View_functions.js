@@ -160,9 +160,13 @@ export function goToLager() {
 }
 
 async function starteDoppelQuiz(raum1, raum2) {
-    await zeigeQuiz(raum1);
-    await new Promise(resolve => setTimeout(resolve, 500)); // Kleine Pause
-    await zeigeQuiz(raum2);
+    const userId = localStorage.getItem("userId");
+    if (!userId) return;
+
+    const nutzerFragen = await getUserQuizFragen(userId);
+    if (nutzerFragen.includes(raum1)) await zeigeQuiz(raum1);
+    await new Promise(resolve => setTimeout(resolve, 500)); // Kurze Pause
+    if (nutzerFragen.includes(raum2)) await zeigeQuiz(raum2);
 }
 
 export function fromLagertoProberaum() {

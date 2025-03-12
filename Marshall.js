@@ -388,9 +388,13 @@ function updatePlaneText(newText) {
 }
 
 async function starteDoppelQuiz(raum1, raum2) {
-    await zeigeQuiz(raum1);
+    const userId = localStorage.getItem("userId");
+    if (!userId) return;
+
+    const nutzerFragen = await getUserQuizFragen(userId);
+    if (nutzerFragen.includes(raum1)) await zeigeQuiz(raum1);
     await new Promise(resolve => setTimeout(resolve, 500)); // Kurze Pause
-    await zeigeQuiz(raum2);
+    if (nutzerFragen.includes(raum2)) await zeigeQuiz(raum2);
 }
 
 async function playAnimation() {

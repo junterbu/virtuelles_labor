@@ -48,3 +48,17 @@ export async function sendQuizAnswer(userId, raum, auswahl) {
         console.error("❌ Fehler in sendQuizAnswer:", error);
     }
 }
+
+export async function getUserQuizFragen(userId) {
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/quizfragen/${userId}`);
+        if (!response.ok) throw new Error("Fehler beim Abrufen der Quizfragen");
+
+        const data = await response.json();
+        console.log("✅ Fragen für den Nutzer geladen:", data.fragen);
+        return data.fragen;
+    } catch (error) {
+        console.error("❌ Fehler beim Abrufen der Fragen:", error);
+        return [];
+    }
+}

@@ -99,6 +99,24 @@ export const quizFragen = {
         optionen: ["0M%", "10M%", "20M%", "30M%"],
         antwort: "10M%",
         punkte: 10 
+    },
+    "WPK": {
+        frage: "Wozu dient die Werkseigene Produktionskontrolle (WPK)?",
+        optionen: ["Zur Qualitätssicherung während der Produktion in Eigenüberwachung", "Zur Sicherstellung eines wirtschaftlichen Produktionsablaufs", "Zur Maximierung des Produktionsvolumens", "Zur Qualitätssicherung nach dem Einbau"],
+        antwort: "Zur Qualitätssicherung während der Produktion in Eigenüberwachung",
+        punkte: 10
+    },
+    "Grenzsieblinien": {
+        frage: "Wo findet man Grenzsieblinien von Asphaltmischgütern?",
+        optionen: ["In den Produktanforderungen für Asphaltmischgut (ÖNORM B 358x-x)", "In den Produktanforderungen für Gesteinskörnungen (ÖNORM B 3130)", "In den Richtlinien für Anforderungen an Asphaltschichten (RVS 08.16.01)", "In der Richtlinie für die Ausführung (RVS 08.07.03)"],
+        antwort: "In den Produktanforderungen für Asphaltmischgut (ÖNORM B 358x-x)",
+        punkte: 10
+    },
+    "Raumdichte": {
+        frage: "Welche Verfahren zur Bestimmung der Raumdichte von Asphaltprobekörpern nach ÖNORM EN 12697-6 sind für dichte Probekörper bis etwa 7% Hohlraumgehalt geeignet?",
+        optionen: ["Verfahren A: Raumdichte — trocken und Verfahren B: Raumdichte — SSD ", "Nur Verfahren B: Raumdichte — SSD ", "Nur Verfahren A: Raumdichte — trocken", "Verfahren C: Raumdichte — umhüllter Probekörper und Verfahren D: Raumdichte durch Ausmessen"],
+        antwort: "Verfahren A: Raumdichte — trocken und Verfahren B: Raumdichte — SSD ",
+        punkte: 10
     }
 };
 
@@ -140,15 +158,15 @@ export async function zeigeQuiz(raum) {
             return;
         }
 
-        const userData = await getUserData(userId);
-        if (!userData.beantworteteRäume) userData.beantworteteRäume = [];
-
-        if (userData.beantworteteRäume.includes(raum)) {
-            console.log("✅ Quiz wurde bereits beantwortet.");
+        // Lade die persönlichen Fragen des Nutzers
+        const nutzerFragen = await getUserQuizFragen(userId);
+        if (!nutzerFragen.includes(raum)) {
+            console.log(`❌ Raum ${raum} ist nicht in den gespeicherten Fragen des Nutzers enthalten.`);
             resolve();
             return;
         }
 
+        // Stelle die Quizfrage, falls sie existiert
         if (quizFragen[raum]) {
             document.getElementById("quizFrage").innerText = quizFragen[raum].frage;
             const optionenContainer = document.getElementById("quizOptionen");
@@ -179,6 +197,9 @@ export async function zeigeQuiz(raum) {
             });
 
             document.getElementById("quizContainer").style.display = "block";
+        } else {
+            console.log(`❌ Keine Frage für Raum: ${raum}`);
+            resolve();
         }
     });
 }
