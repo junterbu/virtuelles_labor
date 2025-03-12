@@ -166,7 +166,7 @@ async function starteDoppelQuiz(raum1, raum2) {
 
     const nutzerFragen = await getUserQuizFragen(userId);
     if (nutzerFragen.includes(raum1)) await zeigeQuiz(raum1);
-    await new Promise(resolve => setTimeout(resolve, 500)); // Kurze Pause
+    await new Promise(resolve => setTimeout(resolve, 700)); // Kurze Pause
     if (nutzerFragen.includes(raum2)) await zeigeQuiz(raum2);
 }
 

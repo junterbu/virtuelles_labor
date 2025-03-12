@@ -9,7 +9,7 @@ import {TWEEN} from 'https://unpkg.com/three@0.139.0/examples/jsm/libs/tween.mod
 
 // Geräteerkennung
 export function isMobileDevice() {
-    const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     console.log(isMobile ? "Mobiles Gerät erkannt." : "Desktop-Gerät erkannt.");
     return isMobile;
 }
