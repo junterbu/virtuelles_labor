@@ -69,6 +69,12 @@ export const quizFragen = {
         optionen: ["Durch eine rechnerische Ableitung der Sieblinie", "Durch Erhitzen des Mischguts auf eine festgelegte Temperatur", "Durch Erstellen einer Polynomfunktion und Finden des Maximums der Raumdichten", "Durch Zugabe von Bindemittel in 1%-Schritten und Sichtprüfung"],
         antwort: "Durch Erstellen einer Polynomfunktion und Finden des Maximums der Raumdichten",
         punkte: 10
+    },
+    "Rohdichte": {
+        frage: "Mit welchem volumetrischen Kennwert wird die maximale Dichte eines Asphaltmischguts ohne Hohlräume beschrieben?",
+        optionen: ["Raumdichte", "Rohdichte", "Schüttdichte", "lose Dichte"],
+        antwort: "Rohdichte",
+        punkte: 10
     }
 };
 

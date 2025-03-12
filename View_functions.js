@@ -167,7 +167,7 @@ async function starteDoppelQuiz(raum1, raum2) {
 
 export function fromLagertoProberaum() {
     currentRoom = "Gesteinsraum";
-    starteDoppelQuiz("Gesteinsraum", "Mischer")
+    starteDoppelQuiz("Gesteinsraum", "Rohdichte")
 
     //Wegpunkte vom Lager ins Labor
     const points = [
