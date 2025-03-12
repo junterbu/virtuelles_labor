@@ -32,10 +32,11 @@ export async function getUserData(userId) {
 
 export async function sendQuizAnswer(userId, raum, auswahl) {
     try {
+        let quizKey = raum.includes("_2") ? raum : `${raum}`;  // Erkennen von _2-Fragen
         const response = await fetch(`${BACKEND_URL}/api/quiz`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userId, raum, auswahl })
+            body: JSON.stringify({ userId, raum: quizKey, auswahl }) 
         });
 
         if (!response.ok) {
@@ -43,7 +44,7 @@ export async function sendQuizAnswer(userId, raum, auswahl) {
         }
 
         const result = await response.json();
-        console.log("✅ Quiz gespeichert:", result);
+        console.log(`✅ Quiz gespeichert für ${quizKey}:`, result);
     } catch (error) {
         console.error("❌ Fehler in sendQuizAnswer:", error);
     }
