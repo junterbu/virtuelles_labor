@@ -277,7 +277,7 @@ export function fromProberaumtoLager() {
 
 export function goToMischraum() {
     currentRoom = 'Mischraum'
-    zeigeQuiz("Mischer");
+    starteDoppelQuiz("Mischer", "Pyknometer")
     //Wegpunkte vom Gesteinsraum ins Lager
     const points = [
         new THREE.Vector3(5, 1.5, -15),    // Startpunkt
@@ -385,7 +385,7 @@ export function leaveView() {
 }
 
 export function toMarshall() {
-    zeigeQuiz("Marshall");
+    starteDoppelQuiz("Marshall", "Hohlraumgehalt")
     // Wegpunkte vom Gesteinsraum ins Lager
     const points = [
         new THREE.Vector3(-8, 1.5, 7),    // Startpunkt

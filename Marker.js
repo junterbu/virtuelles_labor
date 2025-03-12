@@ -75,6 +75,18 @@ export const quizFragen = {
         optionen: ["Raumdichte", "Rohdichte", "Schüttdichte", "lose Dichte"],
         antwort: "Rohdichte",
         punkte: 10
+    },
+    "Pyknometer": {
+        frage: "Wofür steht die Masse m_2 im Volumetrischen Verfahren zur Ermittlung der Rohdichte nach ÖNORM EN 12697-8?",
+        optionen: ["Masse des Pyknometers mit Aufsatz, Feder und Laborprobe", "Masse des Pyknometers mit Aufsatz, Feder, Laborprobe und Wasser", "Masse des Pyknometers mit Aufsatz und Feder", "Volumen des Pyknometers bei Füllung bis zur Messmarke"],
+        antwort: "Masse des Pyknometers mit Aufsatz, Feder und Laborprobe",
+        punkte: 10
+    },
+    "Hohlraumgehalt": {
+        frage: "Ab wie viel % Hohlraumgehalt ist Verfahren D: Raumdichte durch Ausmessen der ÖNORM EN 12697-6 empfohlen?",
+        optionen: ["Ab 1%", "Ab 10%", "Ab 7%", "Ab 23%"],
+        antwort: "Ab 10%",
+        punkte: 10
     }
 };
 
