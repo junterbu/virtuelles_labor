@@ -159,10 +159,15 @@ export function goToLager() {
     lagerproberaumMarker.visible = true; 
 }
 
+async function starteDoppelQuiz(raum1, raum2) {
+    await zeigeQuiz(raum1);
+    await new Promise(resolve => setTimeout(resolve, 500)); // Kleine Pause
+    await zeigeQuiz(raum2);
+}
+
 export function fromLagertoProberaum() {
     currentRoom = "Gesteinsraum";
-    zeigeQuiz("Gesteinsraum");
-    zeigeQuiz("Mischer")
+    starteDoppelQuiz("Gesteinsraum", "Mischer")
 
     //Wegpunkte vom Lager ins Labor
     const points = [

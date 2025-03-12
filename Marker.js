@@ -101,58 +101,56 @@ function setUserId() {
 let beantworteteRäume = new Set();
 
 export async function zeigeQuiz(raum) {
-    const userId = localStorage.getItem("userId");
+    return new Promise(async (resolve) => {
+        const userId = localStorage.getItem("userId");
+        if (!userId) {
+            alert("Bitte zuerst eine Matrikelnummer eingeben.");
+            document.getElementById("userIdContainer").style.display = "block";
+            resolve();
+            return;
+        }
 
-    if (!userId) {
-        alert("Bitte zuerst eine Matrikelnummer eingeben.");
-        document.getElementById("userIdContainer").style.display = "block";
-        return;
-    }
+        const userData = await getUserData(userId);
+        if (!userData.beantworteteRäume) userData.beantworteteRäume = [];
 
-    // Benutzer-Daten abrufen
-    const userData = await getUserData(userId);
+        if (userData.beantworteteRäume.includes(raum)) {
+            console.log("✅ Quiz wurde bereits beantwortet.");
+            resolve();
+            return;
+        }
 
-    // Sicherstellen, dass `userData.beantworteteRäume` existiert
-    if (!userData || !userData.beantworteteRäume) {
-        console.warn("⚠️ Keine beantworteten Räume gefunden, setze auf leeres Array.");
-        userData.beantworteteRäume = []; // Standardwert setzen, falls nicht vorhanden
-    }
+        if (quizFragen[raum]) {
+            document.getElementById("quizFrage").innerText = quizFragen[raum].frage;
+            const optionenContainer = document.getElementById("quizOptionen");
+            optionenContainer.innerHTML = "";
 
-    if (userData.beantworteteRäume.includes(raum)) {
-        console.log("✅ Quiz wurde bereits beantwortet.");
-        return;
-    }
+            let gemischteOptionen = [...quizFragen[raum].optionen].sort(() => Math.random() - 0.5);
 
-    if (quizFragen[raum]) {
-        document.getElementById("quizFrage").innerText = quizFragen[raum].frage;
-        const optionenContainer = document.getElementById("quizOptionen");
-        optionenContainer.innerHTML = "";
+            gemischteOptionen.forEach(option => {
+                const button = document.createElement("button");
+                button.innerText = option;
+                button.classList.add("quiz-option");
 
-        let gemischteOptionen = [...quizFragen[raum].optionen].sort(() => Math.random() - 0.5);
-
-        gemischteOptionen.forEach(option => {
-            const button = document.createElement("button");
-            button.innerText = option;
-            button.classList.add("quiz-option");
-
-            button.addEventListener("click", async () => {
-                button.style.backgroundColor = "#0000ff"; // Dunkelblau als Bestätigung
-                button.style.color = "white";
-
-                await sendQuizAnswer(userId, raum, option);
-
-                setTimeout(() => {
-                    button.style.backgroundColor = "#007bff"; // Zurück zur Standardfarbe
+                button.addEventListener("click", async () => {
+                    button.style.backgroundColor = "#0000ff";
                     button.style.color = "white";
-                    schließeQuiz();
-                }, 1000);
+
+                    await sendQuizAnswer(userId, raum, option);
+
+                    setTimeout(() => {
+                        button.style.backgroundColor = "#007bff";
+                        button.style.color = "white";
+                        schließeQuiz();
+                        resolve(); // Erst wenn das Quiz geschlossen wird, geht es weiter
+                    }, 1000);
+                });
+
+                optionenContainer.appendChild(button);
             });
 
-            optionenContainer.appendChild(button);
-        });
-
-        document.getElementById("quizContainer").style.display = "block";
-    }
+            document.getElementById("quizContainer").style.display = "block";
+        }
+    });
 }
 
 export async function speicherePunkte(raum, auswahl) {
