@@ -58,14 +58,20 @@ export const quizFragen = {
         antwort: "Sie zeigt an, dass gesetzliche Vorschriften eingehalten wurden",
         punkte: 10
     },
+    "Gesteinsraum_2": {
+        frage: "Mit welchem volumetrischen Kennwerte wird die maximale Dichte eines Asphaltmischguts ohne Hohlräume beschrieben?",
+        optionen: ["Raumdichte", "Rohdichte", "Schüttdichte", "lose Dichte"],
+        antwort: "Rohdichte",
+        punkte: 10
+    },
     "Mischer": {
         frage: "Warum ist eine Typprüfung von Asphaltmischgut notwendig?",
-        optionen: ["Um den richtigen Mischguttyp für eine Baustelle zu ermitteln", "Um die normgemäßen Anforderungen an das Mischgut zu überprüfen", "Um die optimale Temperatur für das Mischen festzulegen", "Um den Recyclinganteil im Asphalt zu bestimmen"],
-        antwort: "Um die normgemäßen Anforderungen an das Mischgut zu überprüfen",
+        optionen: ["Um den richtigen Mischguttyp für eine Baustelle zu ermitteln", "Um das Erfüllen der normgemäßen Anforderungen nachzuweisen", "Um die optimale Temperatur für das Mischen festzulegen", "Um den Recyclinganteil im Asphalt zu bestimmen"],
+        antwort: "Um das Erfüllen der normgemäßen Anforderungen nachzuweisen",
         punkte: 10
     },
     "Marshall": {
-        frage: "Wie wird der optimale Bindemittelgehalt eines Asphaltmischguts ermittelt?",
+        frage: "Wie wird der optimale Bindemittelgehalt eines dichten Asphaltmischguts ermittelt?",
         optionen: ["Durch eine rechnerische Ableitung der Sieblinie", "Durch Erhitzen des Mischguts auf eine festgelegte Temperatur", "Durch Erstellen einer Polynomfunktion und Finden des Maximums der Raumdichten", "Durch Zugabe von Bindemittel in 1%-Schritten und Sichtprüfung"],
         antwort: "Durch Erstellen einer Polynomfunktion und Finden des Maximums der Raumdichten",
         punkte: 10
@@ -100,7 +106,7 @@ function setUserId() {
 
 let beantworteteRäume = new Set();
 
-export async function zeigeQuiz(raum) {
+export async function zeigeQuiz(raum, zweiteFrage = false) {
     const userId = localStorage.getItem("userId");
 
     if (!userId) {
@@ -109,50 +115,53 @@ export async function zeigeQuiz(raum) {
         return;
     }
 
-    // Benutzer-Daten abrufen
     const userData = await getUserData(userId);
 
-    // Sicherstellen, dass `userData.beantworteteRäume` existiert
     if (!userData || !userData.beantworteteRäume) {
-        console.warn("⚠️ Keine beantworteten Räume gefunden, setze auf leeres Array.");
-        userData.beantworteteRäume = []; // Standardwert setzen, falls nicht vorhanden
+        userData.beantworteteRäume = [];
     }
 
-    if (userData.beantworteteRäume.includes(raum)) {
-        console.log("✅ Quiz wurde bereits beantwortet.");
+    // Überprüfen, ob die erste oder zweite Frage dran ist
+    let quizKey = zweiteFrage ? `${raum}_2` : raum;
+    if (!quizFragen[quizKey]) {
+        console.warn("⚠️ Kein Quiz für", quizKey);
         return;
     }
 
-    if (quizFragen[raum]) {
-        document.getElementById("quizFrage").innerText = quizFragen[raum].frage;
-        const optionenContainer = document.getElementById("quizOptionen");
-        optionenContainer.innerHTML = "";
+    document.getElementById("quizFrage").innerText = quizFragen[quizKey].frage;
+    const optionenContainer = document.getElementById("quizOptionen");
+    optionenContainer.innerHTML = "";
 
-        let gemischteOptionen = [...quizFragen[raum].optionen].sort(() => Math.random() - 0.5);
+    let gemischteOptionen = [...quizFragen[quizKey].optionen].sort(() => Math.random() - 0.5);
 
-        gemischteOptionen.forEach(option => {
-            const button = document.createElement("button");
-            button.innerText = option;
-            button.classList.add("quiz-option");
-        
-            button.addEventListener("click", async () => {
-                button.style.backgroundColor = "#0000ff"; // Dunkelblau als Bestätigung
+    gemischteOptionen.forEach(option => {
+        const button = document.createElement("button");
+        button.innerText = option;
+        button.classList.add("quiz-option");
+
+        button.addEventListener("click", async () => {
+            button.style.backgroundColor = "#0000ff"; // Bestätigung
+            button.style.color = "white";
+
+            await sendQuizAnswer(userId, raum, option);
+
+            setTimeout(() => {
+                button.style.backgroundColor = "#007bff"; // Zurück zur Standardfarbe
                 button.style.color = "white";
-                
-                await sendQuizAnswer(userId, raum, option);
-                
-                setTimeout(() => {
-                    button.style.backgroundColor = "#007bff"; // Zurück zur Standardfarbe
-                    button.style.color = "white";
+
+                // Falls es das erste Quiz war, das zweite starten
+                if (!zweiteFrage) {
+                    zeigeQuiz(raum, true);
+                } else {
                     schließeQuiz();
-                }, 1000);
-            });
-        
-            optionenContainer.appendChild(button);
+                }
+            }, 1000);
         });
 
-        document.getElementById("quizContainer").style.display = "block";
-    }
+        optionenContainer.appendChild(button);
+    });
+
+    document.getElementById("quizContainer").style.display = "block";
 }
 
 export async function speicherePunkte(raum, auswahl) {
