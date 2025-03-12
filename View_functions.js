@@ -163,8 +163,6 @@ export function fromLagertoProberaum() {
     currentRoom = "Gesteinsraum";
     zeigeQuiz("Gesteinsraum");
 
-    // Nach der Animation weiteres Quiz aufrufen
-    setTimeout(() => zeigeQuiz("Gesteinsraum", true), 5000);
     //Wegpunkte vom Lager ins Labor
     const points = [
         new THREE.Vector3(-12.5, 1.5, 4),  // Startpunkt (Lager)

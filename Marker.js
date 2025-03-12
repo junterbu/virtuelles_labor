@@ -12,7 +12,7 @@ const db = window.firebaseDB;
 function createMarker(h, b, pxx, pxz, text, x, y, z, r) {
     const geometry = new THREE.PlaneGeometry(b, h);
     const material = new THREE.MeshStandardMaterial({ color: 0xbebdb8, side: THREE.DoubleSide });
-    
+
     // Canvas für den Text
     const canvas = document.createElement('canvas');
     canvas.width = pxx;
@@ -23,12 +23,12 @@ function createMarker(h, b, pxx, pxz, text, x, y, z, r) {
     context.textAlign = 'center';
     context.textBaseline = 'middle';
     context.fillText(text, canvas.width / 2, canvas.height / 2);
-    
+
     material.map = new THREE.CanvasTexture(canvas);
     const marker = new THREE.Mesh(geometry, material);
     marker.rotation.y = Math.PI*r;
     marker.position.set(x, y, z);
-    
+
     return marker;
 }
 
@@ -58,20 +58,14 @@ export const quizFragen = {
         antwort: "Sie zeigt an, dass gesetzliche Vorschriften eingehalten wurden",
         punkte: 10
     },
-    "Gesteinsraum_2": {
-        frage: "Mit welchem volumetrischen Kennwerte wird die maximale Dichte eines Asphaltmischguts ohne Hohlräume beschrieben?",
-        optionen: ["Raumdichte", "Rohdichte", "Schüttdichte", "lose Dichte"],
-        antwort: "Rohdichte",
-        punkte: 10
-    },
     "Mischer": {
         frage: "Warum ist eine Typprüfung von Asphaltmischgut notwendig?",
-        optionen: ["Um den richtigen Mischguttyp für eine Baustelle zu ermitteln", "Um das Erfüllen der normgemäßen Anforderungen nachzuweisen", "Um die optimale Temperatur für das Mischen festzulegen", "Um den Recyclinganteil im Asphalt zu bestimmen"],
-        antwort: "Um das Erfüllen der normgemäßen Anforderungen nachzuweisen",
+        optionen: ["Um den richtigen Mischguttyp für eine Baustelle zu ermitteln", "Um die normgemäßen Anforderungen an das Mischgut zu überprüfen", "Um die optimale Temperatur für das Mischen festzulegen", "Um den Recyclinganteil im Asphalt zu bestimmen"],
+        antwort: "Um die normgemäßen Anforderungen an das Mischgut zu überprüfen",
         punkte: 10
     },
     "Marshall": {
-        frage: "Wie wird der optimale Bindemittelgehalt eines dichten Asphaltmischguts ermittelt?",
+        frage: "Wie wird der optimale Bindemittelgehalt eines Asphaltmischguts ermittelt?",
         optionen: ["Durch eine rechnerische Ableitung der Sieblinie", "Durch Erhitzen des Mischguts auf eine festgelegte Temperatur", "Durch Erstellen einer Polynomfunktion und Finden des Maximums der Raumdichten", "Durch Zugabe von Bindemittel in 1%-Schritten und Sichtprüfung"],
         antwort: "Durch Erstellen einer Polynomfunktion und Finden des Maximums der Raumdichten",
         punkte: 10
@@ -106,7 +100,7 @@ function setUserId() {
 
 let beantworteteRäume = new Set();
 
-export async function zeigeQuiz(raum, zweiteFrage = false) {
+export async function zeigeQuiz(raum) {
     const userId = localStorage.getItem("userId");
 
     if (!userId) {
@@ -115,57 +109,55 @@ export async function zeigeQuiz(raum, zweiteFrage = false) {
         return;
     }
 
+    // Benutzer-Daten abrufen
     const userData = await getUserData(userId);
 
+    // Sicherstellen, dass `userData.beantworteteRäume` existiert
     if (!userData || !userData.beantworteteRäume) {
-        userData.beantworteteRäume = [];
+        console.warn("⚠️ Keine beantworteten Räume gefunden, setze auf leeres Array.");
+        userData.beantworteteRäume = []; // Standardwert setzen, falls nicht vorhanden
     }
 
-    // Überprüfen, ob die erste oder zweite Frage dran ist
-    let quizKey = zweiteFrage ? `${raum}_2` : raum;
-    if (!quizFragen[quizKey]) {
-        console.warn("⚠️ Kein Quiz für", quizKey);
+    if (userData.beantworteteRäume.includes(raum)) {
+        console.log("✅ Quiz wurde bereits beantwortet.");
         return;
     }
 
-    document.getElementById("quizFrage").innerText = quizFragen[quizKey].frage;
-    const optionenContainer = document.getElementById("quizOptionen");
-    optionenContainer.innerHTML = "";
+    if (quizFragen[raum]) {
+        document.getElementById("quizFrage").innerText = quizFragen[raum].frage;
+        const optionenContainer = document.getElementById("quizOptionen");
+        optionenContainer.innerHTML = "";
 
-    let gemischteOptionen = [...quizFragen[quizKey].optionen].sort(() => Math.random() - 0.5);
+        let gemischteOptionen = [...quizFragen[raum].optionen].sort(() => Math.random() - 0.5);
 
-    gemischteOptionen.forEach(option => {
-        const button = document.createElement("button");
-        button.innerText = option;
-        button.classList.add("quiz-option");
+        gemischteOptionen.forEach(option => {
+            const button = document.createElement("button");
+            button.innerText = option;
+            button.classList.add("quiz-option");
 
-        button.addEventListener("click", async () => {
-            button.style.backgroundColor = "#0000ff"; // Bestätigung
-            button.style.color = "white";
-
-            await sendQuizAnswer(userId, raum, option);
-
-            setTimeout(() => {
-                button.style.backgroundColor = "#007bff"; // Zurück zur Standardfarbe
+            button.addEventListener("click", async () => {
+                button.style.backgroundColor = "#0000ff"; // Dunkelblau als Bestätigung
                 button.style.color = "white";
 
-                // Falls es das erste Quiz war, das zweite starten
-                if (!zweiteFrage) {
-                    zeigeQuiz(raum, true);
-                } else {
+                await sendQuizAnswer(userId, raum, option);
+
+                setTimeout(() => {
+                    button.style.backgroundColor = "#007bff"; // Zurück zur Standardfarbe
+                    button.style.color = "white";
                     schließeQuiz();
-                }
-            }, 1000);
+                }, 1000);
+            });
+
+            optionenContainer.appendChild(button);
         });
 
-        optionenContainer.appendChild(button);
-    });
-
-    document.getElementById("quizContainer").style.display = "block";
+        document.getElementById("quizContainer").style.display = "block";
+    }
 }
 
 export async function speicherePunkte(raum, auswahl) {
-    const userId = localStorage.getItem("userId");
+    userId = localStorage.getItem("userId");
+
     if (!userId) return;
 
     const docRef = doc(db, "quizErgebnisse", userId);
@@ -175,17 +167,15 @@ export async function speicherePunkte(raum, auswahl) {
     let beantworteteRäume = [];
 
     if (docSnap.exists()) {
-        beantworteteRäume = docSnap.data().beantworteteRäume || [];
-        quizPunkteNeu = docSnap.data().punkte || 0;
+        beantworteteRäume = docSnap.data().beantworteteRäume;
+        quizPunkteNeu = docSnap.data().punkte;
     }
 
-    let quizKey = raum.includes("_2") ? raum : `${raum}`;  // Erkennen von _2-Fragen
-
-    if (!beantworteteRäume.includes(quizKey)) {
-        if (quizFragen[quizKey].antwort === auswahl) {
-            quizPunkteNeu += quizFragen[quizKey].punkte;
+    if (!beantworteteRäume.includes(raum)) {
+        if (quizFragen[raum].antwort === auswahl) {
+            quizPunkteNeu += quizFragen[raum].punkte;
         }
-        beantworteteRäume.push(quizKey);
+        beantworteteRäume.push(raum);
     }
 
     await setDoc(docRef, {
@@ -193,7 +183,7 @@ export async function speicherePunkte(raum, auswahl) {
         beantworteteRäume: beantworteteRäume
     });
 
-    console.log(`📌 Punkte für ${quizKey} gespeichert: ${quizPunkteNeu}`);
+    console.log(`Punkte gespeichert für ${userId}: ${quizPunkteNeu}`);
 }
 
 function schließeQuiz() {

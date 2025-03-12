@@ -32,19 +32,18 @@ export async function getUserData(userId) {
 
 export async function sendQuizAnswer(userId, raum, auswahl) {
     try {
-        let quizKey = raum.includes("_2") ? raum : `${raum}`; // Erkennen der zweiten Frage
-
-        console.log(`📤 Sende Quiz-Daten an Backend: ${userId}, ${quizKey}, ${auswahl}`);
-
         const response = await fetch(`${BACKEND_URL}/api/quiz`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userId, raum: quizKey, auswahl }) 
+            body: JSON.stringify({ userId, raum, auswahl })
         });
 
-        const result = await response.json();
-        console.log(`✅ Antwort vom Backend für ${quizKey}:`, result);
+        if (!response.ok) {
+            throw new Error(`Fehler beim Senden der Quiz-Antwort: ${response.status}`);
+        }
 
+        const result = await response.json();
+        console.log("✅ Quiz gespeichert:", result);
     } catch (error) {
         console.error("❌ Fehler in sendQuizAnswer:", error);
     }
