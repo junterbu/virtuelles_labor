@@ -403,7 +403,7 @@ async function playAnimation() {
         action.play();
 
         // Starte die zwei Quizfragen
-        await starteDoppelQuiz("Marshall", "NeueFrage"); // Diese Funktion erstellen wir unten
+        await starteDoppelQuiz("ÖNORM EN 12697-8", "NaBe"); // Diese Funktion erstellen wir unten
         
         // Warte auf das Ende der Animation
         await warteAufAnimation();
