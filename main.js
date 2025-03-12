@@ -32,7 +32,7 @@ export async function getUserData(userId) {
 
 export async function sendQuizAnswer(userId, raum, auswahl) {
     try {
-        let quizKey = raum.includes("_2") ? raum : `${raum}`; // Prüft, ob es eine zweite Frage ist
+        let quizKey = raum.includes("_2") ? raum : `${raum}`; // Erkennen der zweiten Frage
 
         console.log(`📤 Sende Quiz-Daten an Backend: ${userId}, ${quizKey}, ${auswahl}`);
 
