@@ -133,16 +133,6 @@ function animate() {
             }
         }
 
-    
-        if (!animationCompleted) {
-            async function starteDoppelQuiz(raum1, raum2) {
-                await zeigeQuiz(raum1);
-                await new Promise(resolve => setTimeout(resolve, 500)); // Kleine Pause
-                await zeigeQuiz(raum2);
-            }
-
-            starteDoppelQuiz("ÖNORM EN 12697-8", "NaBe")
-        }
 
         if (action && action.isRunning() === false && !animationCompleted) {
             animationCompleted = true; // Setze den Status auf abgeschlossen
@@ -215,9 +205,7 @@ function animate() {
             
             
             const sieblinieCanvas = document.querySelector("#canvas-container canvas"); // Sieblinie Canvas abrufen
-            if (actionCompleted) {
-                generatePDFReport(selectedMix, eimerWerte, bitumengehalt, Rohdichten, raumdichten, canvasSieblinie);
-            }
+            // generatePDFReport(selectedMix, eimerWerte, bitumengehalt, Rohdichten, raumdichten, canvasSieblinie);
             texture.needsUpdate = true; // Textur aktualisieren
         }
     }
@@ -399,16 +387,44 @@ function updatePlaneText(newText) {
     texture.needsUpdate = true; // Aktualisiere die Textur
 }
 
+async function starteDoppelQuiz(raum1, raum2) {
+    await zeigeQuiz(raum1);
+    await new Promise(resolve => setTimeout(resolve, 500)); // Kurze Pause
+    await zeigeQuiz(raum2);
+}
 
-function playAnimation() {
+async function playAnimation() {
     if (action) {
-        action.reset(); // Setze die Animation zurück
-        action.timeScale = 24 / FPS; // Anpassung der Abspielgeschwindigkeit
-        probekörper.visible = false; // Sichtbarkeit zurücksetzen
-        updatePlaneText('Marshall-Verdichter läuft...'); // Text aktualisieren
-        animationCompleted = false; // Animationsstatus zurücksetzen
-        action.play(); // Starte die Animation
+        action.reset();
+        action.timeScale = 24 / FPS;
+        probekörper.visible = false;
+        updatePlaneText('Marshall-Verdichter läuft...');
+        animationCompleted = false;
+        action.play();
+
+        // Starte die zwei Quizfragen
+        await starteDoppelQuiz("Marshall", "NeueFrage"); // Diese Funktion erstellen wir unten
+        
+        // Warte auf das Ende der Animation
+        await warteAufAnimation();
+
+        // Erst dann PDF generieren
+        generatePDFReport(selectedMix, eimerWerte, bitumengehalt, Rohdichten, raumdichten, canvasSieblinie);
     }
+}
+
+
+function warteAufAnimation() {
+    return new Promise(resolve => {
+        function checkAnimation() {
+            if (action && !action.isRunning()) {
+                resolve();
+            } else {
+                requestAnimationFrame(checkAnimation);
+            }
+        }
+        checkAnimation();
+    });
 }
 
 document.getElementById('bitumenRange').addEventListener('input', () => {
