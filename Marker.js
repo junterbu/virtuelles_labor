@@ -158,7 +158,7 @@ export async function zeigeQuiz(raum) {
             return;
         }
 
-        // Lade die persönlichen Fragen des Nutzers
+        // Lade die gespeicherten Fragen des Nutzers
         const nutzerFragen = await getUserQuizFragen(userId);
         if (!nutzerFragen.includes(raum)) {
             console.log(`❌ Raum ${raum} ist nicht in den gespeicherten Fragen des Nutzers enthalten.`);
@@ -166,40 +166,26 @@ export async function zeigeQuiz(raum) {
             return;
         }
 
-        // Stelle die Quizfrage, falls sie existiert
         if (quizFragen[raum]) {
             document.getElementById("quizFrage").innerText = quizFragen[raum].frage;
             const optionenContainer = document.getElementById("quizOptionen");
             optionenContainer.innerHTML = "";
 
-            let gemischteOptionen = [...quizFragen[raum].optionen].sort(() => Math.random() - 0.5);
-
-            gemischteOptionen.forEach(option => {
+            quizFragen[raum].optionen.forEach(option => {
                 const button = document.createElement("button");
                 button.innerText = option;
                 button.classList.add("quiz-option");
 
                 button.addEventListener("click", async () => {
-                    button.style.backgroundColor = "#0000ff";
-                    button.style.color = "white";
-
                     await sendQuizAnswer(userId, raum, option);
-
-                    setTimeout(() => {
-                        button.style.backgroundColor = "#007bff";
-                        button.style.color = "white";
-                        schließeQuiz();
-                        resolve(); // Erst wenn das Quiz geschlossen wird, geht es weiter
-                    }, 1000);
+                    schließeQuiz();
+                    resolve();
                 });
 
                 optionenContainer.appendChild(button);
             });
 
             document.getElementById("quizContainer").style.display = "block";
-        } else {
-            console.log(`❌ Keine Frage für Raum: ${raum}`);
-            resolve();
         }
     });
 }
