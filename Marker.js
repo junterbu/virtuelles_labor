@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
 import { getUserData } from "./main.js"; // Falls noch nicht importiert
 import { sendQuizAnswer } from "./main.js";
+import { getUserQuizFragen } from "./main.js";
 
 // Firestore-Instanz holen
 const db = window.firebaseDB;
