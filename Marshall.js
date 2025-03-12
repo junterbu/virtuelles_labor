@@ -135,7 +135,7 @@ function animate() {
 
         if (action) {
             const currentFrame = action.time * FPS;
-            if (currentFrame >= 1) {
+            if (2 >= currentFrame >= 1) {
                 async function starteDoppelQuiz(raum1, raum2) {
                     await zeigeQuiz(raum1);
                     await new Promise(resolve => setTimeout(resolve, 500)); // Kleine Pause
