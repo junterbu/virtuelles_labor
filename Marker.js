@@ -165,8 +165,7 @@ export async function zeigeQuiz(raum, zweiteFrage = false) {
 }
 
 export async function speicherePunkte(raum, auswahl) {
-    userId = localStorage.getItem("userId");
-
+    const userId = localStorage.getItem("userId");
     if (!userId) return;
 
     const docRef = doc(db, "quizErgebnisse", userId);
@@ -176,15 +175,17 @@ export async function speicherePunkte(raum, auswahl) {
     let beantworteteRäume = [];
 
     if (docSnap.exists()) {
-        beantworteteRäume = docSnap.data().beantworteteRäume;
-        quizPunkteNeu = docSnap.data().punkte;
+        beantworteteRäume = docSnap.data().beantworteteRäume || [];
+        quizPunkteNeu = docSnap.data().punkte || 0;
     }
 
-    if (!beantworteteRäume.includes(raum)) {
-        if (quizFragen[raum].antwort === auswahl) {
-            quizPunkteNeu += quizFragen[raum].punkte;
+    let quizKey = raum.includes("_2") ? raum : `${raum}`;  // Erkennen von _2-Fragen
+
+    if (!beantworteteRäume.includes(quizKey)) {
+        if (quizFragen[quizKey].antwort === auswahl) {
+            quizPunkteNeu += quizFragen[quizKey].punkte;
         }
-        beantworteteRäume.push(raum);
+        beantworteteRäume.push(quizKey);
     }
 
     await setDoc(docRef, {
@@ -192,7 +193,7 @@ export async function speicherePunkte(raum, auswahl) {
         beantworteteRäume: beantworteteRäume
     });
 
-    console.log(`Punkte gespeichert für ${userId}: ${quizPunkteNeu}`);
+    console.log(`📌 Punkte für ${quizKey} gespeichert: ${quizPunkteNeu}`);
 }
 
 function schließeQuiz() {
