@@ -87,6 +87,18 @@ export const quizFragen = {
         optionen: ["Ab 1%", "Ab 10%", "Ab 7%", "Ab 23%"],
         antwort: "Ab 10%",
         punkte: 10
+    },
+    "ÖNORM EN 12697-8": {
+        frage: "Wie wird der Hohlraumgehalt eines Probekörpers nach ÖNORM EN 12697-8 ermittelt?",
+        optionen: ["Aus der Differenz von Raumdichte und Rohdichte", "Aus der Raumdichte und den Abmessungen", "Aus der Rohdichte und den Abmessungen", "Aus den Abmessungen und dem Volumen"],
+        antwort: "Aus der Differenz von Raumdichte und Rohdichte",
+        punkte: 10 
+    },
+    "NaBe": {
+        frage: "Wie viele Recyclingasphalt muss ein Asphaltmischgut gemäß „Aktionsplan nachhaltige öffentlichen Beschaffung (naBe)“ mindestens enthalten?",
+        optionen: ["0M%", "10M%", "20M%", "30M%"],
+        antwort: "10M%",
+        punkte: 10 
     }
 };
 
