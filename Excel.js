@@ -371,6 +371,15 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
         });
     }
 
+    // Berechnung des optimalen Bindemittelgehalts
+    function findOptimalBitumen(a, b, c) {
+        const x_max = -b / (2 * a);
+        const y_max = a * x_max ** 2 + b * x_max + c;
+        return { x_max, y_max };
+    }
+
+    let { x_max, y_max } = findOptimalBitumen(a, b, c);
+
     new Chart(ctx, {
         type: "scatter",
         data: {
@@ -449,7 +458,12 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
         pdf.text("Optimaler Bitumengehalt:", 10, startY);
         startY += 5;
         pdf.addImage(image, "PNG", 10, startY, 180, 100);
-
+        startY +=120
+        // Werte ins PDF einfügen
+        pdf.setFontSize(14);
+        pdf.text(`Optimaler Bindemittelgehalt: ${x_max.toFixed(2)}%`, 10, startY);
+        startY += 10;
+        pdf.text(`Maximale Raumdichte: ${y_max.toFixed(3)} g/cm³`, 10, startY);
         // Entfernen des temporären Canvas
         document.body.removeChild(scatterCanvas);
         pdf.addPage();
