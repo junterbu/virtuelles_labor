@@ -333,7 +333,7 @@ function zeichneSieblinie(sieblinie) {
     contextSieblinie.fillText("Sieblinie", canvasSieblinie.width / 2, 5);  // Titel über dem Diagramm
 
     // 🔥 Legende zeichnen (direkt unter dem Titel)
-    let legendX = canvasWidth / 2 - 80;
+    let legendX = 50;
     let legendY = 25;
 
     contextSieblinie.fillStyle = 'black';
@@ -343,16 +343,16 @@ function zeichneSieblinie(sieblinie) {
     contextSieblinie.strokeStyle = 'red';
     contextSieblinie.lineWidth = 2;
     contextSieblinie.beginPath();
-    contextSieblinie.moveTo(legendX + 50, legendY+10);
-    contextSieblinie.lineTo(legendX + 80, legendY+10);
+    contextSieblinie.moveTo(legendX + 50, legendY+7.5);
+    contextSieblinie.lineTo(legendX + 80, legendY+7.5);
     contextSieblinie.stroke();
     contextSieblinie.fillText("Grenzsieblinien", legendX + 90, legendY);
 
     // 🟢 Ist-Sieblinie (grüner Strich)
     contextSieblinie.strokeStyle = 'green';
     contextSieblinie.beginPath();
-    contextSieblinie.moveTo(legendX + 150, legendY+10);
-    contextSieblinie.lineTo(legendX + 180, legendY+10);
+    contextSieblinie.moveTo(legendX + 150, legendY+7.5);
+    contextSieblinie.lineTo(legendX + 180, legendY+7.5);
     contextSieblinie.stroke();
     contextSieblinie.fillText("Ist - Sieblinie", legendX + 190, legendY);
 
