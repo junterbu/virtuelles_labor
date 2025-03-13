@@ -240,6 +240,7 @@ export async function generatePDFReport(mischgutName, eimerWerte, bitumengehalt,
         pdf.save("Laborbericht.pdf");
     }, 500);
 
+    startY += 100;
     // Punkteübersicht
     pdf.setFontSize(14);
     pdf.text(`Erreichte Punkte: ${quizPunkte} / 80`, 10, startY);
