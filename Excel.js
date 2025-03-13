@@ -26,26 +26,27 @@ async function fetchQuizResults(userId) {
     }
 }
 
-async function uploadOrSendPDF(userId, pdfBlob) {
+async function sendPDFByEmail(userId, pdfBlob) {
     const formData = new FormData();
     formData.append("userId", userId);
 
-    // 🔥 PDF korrekt als Datei (`File`) senden
+    // 🔥 PDF als Datei (`File`) senden
     const file = new File([pdfBlob], "Laborbericht.pdf", { type: "application/pdf" });
     formData.append("pdf", file);
 
     try {
-        const response = await fetch(`${BACKEND_URL}/api/uploadPDF`, {
+        const response = await fetch(`${BACKEND_URL}/api/sendEmail`, {
             method: "POST",
             body: formData
         });
 
         const result = await response.json();
-        console.log("✅ PDF erfolgreich gespeichert/versendet:", result);
+        console.log("✅ PDF erfolgreich per E-Mail gesendet:", result);
     } catch (error) {
-        console.error("❌ Fehler beim Hochladen/Senden des PDFs:", error);
+        console.error("❌ Fehler beim Senden des PDFs per E-Mail:", error);
     }
 }
+
 
 
 export async function generatePDFReport(mischgutName, eimerWerte, bitumengehalt, Rohdichten, raumdichten, sieblinieCanvas) {
@@ -298,6 +299,6 @@ export async function generatePDFReport(mischgutName, eimerWerte, bitumengehalt,
         const pdfBlob = pdf.output("blob");
 
         // Speichern in Firebase oder per E-Mail senden
-        uploadOrSendPDF(userId, pdfBlob);
+        sendPDFByEmail(userId, pdfBlob);
     }, 500);
 }
