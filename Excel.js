@@ -126,6 +126,7 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
         head: [rohHeaders],
         body: rohData,
     });
+    startY = pdf.lastAutoTable.finalY + 10;
 
     // Raumdichten
     pdf.setFontSize(14)
@@ -317,6 +318,7 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
         head: [rohHeaders],
         body: rohData,
     });
+    startY = pdf.lastAutoTable.finalY + 10;
 
     // Raumdichten
     pdf.setFontSize(14)
