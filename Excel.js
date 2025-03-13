@@ -234,7 +234,7 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
         pdf.text(`Gesamtpunkte: ${quizPunkte} / 80`, 10, startY);
 
         // PDF speichern
-        pdf.save("Laborbericht.pdf");
+        pdf.save(`Prüfbericht_${userId}.pdf`);
     }, 500);
 }
 
