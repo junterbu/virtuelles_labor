@@ -235,14 +235,14 @@ export async function generatePDFReport(mischgutName, eimerWerte, bitumengehalt,
 
         // Entfernen des temporären Canvas
         document.body.removeChild(scatterCanvas);
-
+        startY += 100;
+        // Punkteübersicht
+        pdf.setFontSize(14);
+        pdf.text(`Erreichte Punkte: ${quizPunkte} / 80`, 10, startY);
+        startY += 10;
         // PDF speichern
         pdf.save("Laborbericht.pdf");
     }, 500);
 
-    startY += 100;
-    // Punkteübersicht
-    pdf.setFontSize(14);
-    pdf.text(`Erreichte Punkte: ${quizPunkte} / 80`, 10, startY);
-    startY += 10;
+    
 }
