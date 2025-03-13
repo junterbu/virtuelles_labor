@@ -8,7 +8,7 @@ import { canvasSieblinie, eimerWerte, selectedMix } from './Gesteinsraum.js';
 import { isMobileDevice } from './Allgemeines.js';
 import { generatePDFReport } from './Excel.js';
 import { zeigeQuiz } from './Marker.js';
-import { getUserQuizFragen, getUserBeantworteteFragen } from './main.js';
+import { getUserQuizFragen, getNextTwoQuestions } from './main.js';
 
 const inputEvent = isMobileDevice() ? 'touchstart' : 'click';
 
@@ -388,18 +388,17 @@ function updatePlaneText(newText) {
     texture.needsUpdate = true; // Aktualisiere die Textur
 }
 
-async function starteDoppelQuiz(raum1, raum2) {
+async function starteDoppelQuiz() {
     const userId = localStorage.getItem("userId");
     if (!userId) return;
 
-    const nutzerFragen = await getUserQuizFragen(userId);
-    const beantworteteFragen = await getUserBeantworteteFragen(userId);
-
-    if (nutzerFragen.includes(raum1) && !beantworteteFragen.includes(raum1)) await zeigeQuiz(raum1);
-    await new Promise(resolve => setTimeout(resolve, 700)); // Kurze Pause
-    if (nutzerFragen.includes(raum2) && !beantworteteFragen.includes(raum2)) await zeigeQuiz(raum2);
+    const naechsteFragen = await getNextTwoQuestions(userId);
+    if (naechsteFragen.length > 0) await zeigeQuiz(naechsteFragen[0]);
+    if (naechsteFragen.length > 1) {
+        await new Promise(resolve => setTimeout(resolve, 700)); // Kurze Pause
+        await zeigeQuiz(naechsteFragen[1]);
+    }
 }
-
 
 
 async function playAnimation() {
@@ -412,7 +411,7 @@ async function playAnimation() {
         action.play();
 
         // Starte die zwei Quizfragen
-        await starteDoppelQuiz("ÖNORM EN 12697-8", "NaBe"); // Diese Funktion erstellen wir unten
+        await starteDoppelQuiz(); // Diese Funktion erstellen wir unten
         
         // Warte auf das Ende der Animation
         await warteAufAnimation();

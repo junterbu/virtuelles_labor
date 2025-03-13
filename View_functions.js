@@ -6,7 +6,7 @@ import { isMobileDevice, scene } from './Allgemeines.js';
 import { lagerMarker, leaveproberaumMarker, proberaumlagerMarker, lagerproberaumMarker, toMischraumMarker, leaveMischraum, leavelagerMarker, toMarshallMarker, leaveMarshall, activeMarkers, markers} from "./Marker.js";
 import { VRButton } from 'three/addons/webxr/VRButton.js';
 import { zeigeQuiz, speicherePunkte, quizFragen, quizPunkte } from "./Marker.js";
-import { getUserQuizFragen, getUserBeantworteteFragen } from "./main.js";
+import { getUserQuizFragen, getNextTwoQuestions } from "./main.js";
 // Bestimmen Sie das Event basierend auf dem Gerät
 const inputEvent = isMobileDevice() ? 'touchstart' : 'click';
 
@@ -160,22 +160,21 @@ export function goToLager() {
     lagerproberaumMarker.visible = true; 
 }
 
-async function starteDoppelQuiz(raum1, raum2) {
+async function starteDoppelQuiz() {
     const userId = localStorage.getItem("userId");
     if (!userId) return;
 
-    const nutzerFragen = await getUserQuizFragen(userId);
-    const beantworteteFragen = await getUserBeantworteteFragen(userId);
-
-    if (nutzerFragen.includes(raum1) && !beantworteteFragen.includes(raum1)) await zeigeQuiz(raum1);
-    await new Promise(resolve => setTimeout(resolve, 700)); // Kurze Pause
-    if (nutzerFragen.includes(raum2) && !beantworteteFragen.includes(raum2)) await zeigeQuiz(raum2);
+    const naechsteFragen = await getNextTwoQuestions(userId);
+    if (naechsteFragen.length > 0) await zeigeQuiz(naechsteFragen[0]);
+    if (naechsteFragen.length > 1) {
+        await new Promise(resolve => setTimeout(resolve, 700)); // Kurze Pause
+        await zeigeQuiz(naechsteFragen[1]);
+    }
 }
-
 
 export function fromLagertoProberaum() {
     currentRoom = "Gesteinsraum";
-    starteDoppelQuiz("Gesteinsraum", "Rohdichte")
+    starteDoppelQuiz();
 
     //Wegpunkte vom Lager ins Labor
     const points = [
@@ -284,8 +283,8 @@ export function fromProberaumtoLager() {
 }
 
 export function goToMischraum() {
-    currentRoom = 'Mischraum'
-    starteDoppelQuiz("Mischer", "Pyknometer")
+    currentRoom = 'Mischraum';
+    starteDoppelQuiz();
     //Wegpunkte vom Gesteinsraum ins Lager
     const points = [
         new THREE.Vector3(5, 1.5, -15),    // Startpunkt
@@ -393,7 +392,7 @@ export function leaveView() {
 }
 
 export function toMarshall() {
-    starteDoppelQuiz("Marshall", "Hohlraumgehalt")
+    starteDoppelQuiz();
     // Wegpunkte vom Gesteinsraum ins Lager
     const points = [
         new THREE.Vector3(-8, 1.5, 7),    // Startpunkt

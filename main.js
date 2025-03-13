@@ -76,3 +76,17 @@ export async function getUserBeantworteteFragen(userId) {
         return [];
     }
 }
+
+export async function getNextTwoQuestions(userId) {
+    try {
+        const nutzerFragen = await getUserQuizFragen(userId);
+        const beantworteteFragen = await getUserBeantworteteFragen(userId);
+
+        // Finde die nächsten zwei unbeantworteten Fragen
+        const offeneFragen = nutzerFragen.filter(f => !beantworteteFragen.includes(f)).slice(0, 2);
+        return offeneFragen;
+    } catch (error) {
+        console.error("❌ Fehler beim Abrufen der nächsten zwei Fragen:", error);
+        return [];
+    }
+}
