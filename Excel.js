@@ -458,7 +458,6 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
         pdf.text("Optimaler Bitumengehalt:", 10, startY);
         startY += 5;
         pdf.addImage(image, "PNG", 10, startY, 180, 100);
-        startY +=120
         // Werte ins PDF einfügen
         pdf.setFontSize(14);
         pdf.text(`Optimaler Bindemittelgehalt: ${x_max.toFixed(2)}%`, 10, startY);
