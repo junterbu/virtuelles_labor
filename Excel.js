@@ -226,11 +226,6 @@ export async function generatePDFReport(mischgutName, eimerWerte, bitumengehalt,
         }
     });
 
-    // Punkteübersicht
-    pdf.setFontSize(14);
-    pdf.text(`Erreichte Punkte: ${quizPunkte} / 80`, 10, startY);
-    startY += 10;
-
     // Warten, bis der Chart gezeichnet wurde
     setTimeout(() => {
         const image = scatterCanvas.toDataURL("image/png");
@@ -244,4 +239,9 @@ export async function generatePDFReport(mischgutName, eimerWerte, bitumengehalt,
         // PDF speichern
         pdf.save("Laborbericht.pdf");
     }, 500);
+
+    // Punkteübersicht
+    pdf.setFontSize(14);
+    pdf.text(`Erreichte Punkte: ${quizPunkte} / 80`, 10, startY);
+    startY += 10;
 }
