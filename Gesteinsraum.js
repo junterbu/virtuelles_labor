@@ -285,6 +285,14 @@ function zeichneSieblinie(sieblinie) {
         contextSieblinie.fillText(yLabel, paddingLeft - 10, y);  // Links neben dem Diagramm
     }
 
+    // Y-Achse vertikale Beschriftung (Drehen)
+    contextSieblinie.save();
+    contextSieblinie.translate(15, canvasHeight / 2);
+    contextSieblinie.rotate(-Math.PI / 2);
+    contextSieblinie.textAlign = 'center';
+    contextSieblinie.fillText("Siebdurchgang [M%]", 0, 0);
+    contextSieblinie.restore();
+
     // Achsenbeschriftungen (X-Achse)
     contextSieblinie.textAlign = 'center';
     contextSieblinie.textBaseline = 'top';
@@ -293,6 +301,9 @@ function zeichneSieblinie(sieblinie) {
         let x = paddingLeft + i * ((canvasWidth - paddingLeft - paddingRight) / (xLabels.length - 1));
         contextSieblinie.fillText(xLabels[i], x, canvasHeight + 5);  // Unterhalb des Diagramms
     }
+
+    // X-Achsen-Beschriftung unterhalb der X-Achse
+    contextSieblinie.fillText("Siebweite [mm]", canvasSieblinie.width / 2, canvasHeight + 25);
 
     // Sieblinie zeichnen
     contextSieblinie.strokeStyle = 'green';
@@ -356,6 +367,24 @@ function zeichneSieblinie(sieblinie) {
         }
     }
     contextSieblinie.stroke();
+
+    // 🔥 Legende zeichnen
+    let legendX = canvasWidth - 140;
+    let legendY = canvasHeight + 10;
+
+    // Sieblinie (grün)
+    contextSieblinie.fillStyle = 'green';
+    contextSieblinie.fillRect(legendX, legendY, 15, 3);
+    contextSieblinie.fillStyle = 'black';
+    contextSieblinie.fillText("Sieblinie", legendX + 25, legendY + 3);
+
+    // Grenzlinien (rot)
+    legendY += 15;
+    contextSieblinie.fillStyle = 'red';
+    contextSieblinie.fillRect(legendX, legendY, 15, 3);
+    contextSieblinie.fillStyle = 'black';
+    contextSieblinie.fillText("Grenzlinien", legendX + 25, legendY + 3);
+    
     return canvasSieblinie;
 }
 
