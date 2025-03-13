@@ -237,8 +237,8 @@ function zeichneSieblinie(sieblinie) {
     let canvasWidth = 512;
     let canvasHeight = 256;
     let paddingLeft = 70;  // Abstand links für Y-Achsen-Beschriftung
-    let paddingBottom = 50;  // Abstand unten für X-Achsen-Beschriftung
-    let paddingTop = 50;  // Abstand oben für Titel
+    let paddingBottom = 20;  // Abstand unten für X-Achsen-Beschriftung
+    let paddingTop = 70;  // Abstand oben für Titel
     let paddingRight = 20;  // Rechter Rand
 
     canvasSieblinie = document.createElement('canvas');
@@ -349,13 +349,12 @@ function zeichneSieblinie(sieblinie) {
     contextSieblinie.fillText("Grenzsieblinien", legendX + 90, legendY);
 
     // 🟢 Ist-Sieblinie (grüner Strich)
-    legendY += 15;
     contextSieblinie.strokeStyle = 'green';
     contextSieblinie.beginPath();
-    contextSieblinie.moveTo(legendX + 50, legendY);
-    contextSieblinie.lineTo(legendX + 80, legendY);
+    contextSieblinie.moveTo(legendX + 260, legendY);
+    contextSieblinie.lineTo(legendX + 290, legendY);
     contextSieblinie.stroke();
-    contextSieblinie.fillText("Ist - Sieblinie", legendX + 90, legendY);
+    contextSieblinie.fillText("Ist - Sieblinie", legendX + 300, legendY);
 
     // **Obere Grenz-Sieblinie** definieren (fiktive Werte, bitte anpassen)
     let obereGrenze = aktuelleGrenzen.obereGrenze;
