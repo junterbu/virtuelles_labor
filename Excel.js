@@ -72,6 +72,7 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
     startY += 10;
 
     // Eimerwerte Tabelle
+    pdf.setFontSize(14);
     pdf.text("Gesteinssieblinie [%]:", 10, startY);
     startY += 5;
 
@@ -92,11 +93,16 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
         pdf.addImage(sieblinieImage, "PNG", 10, startY, 180, 100);
     }
 
-    startY += 100;
     // ---- Wechsel auf eine neue Seite für den Plot ----
     pdf.addPage();
     startY = 10;
+
+    pdf.setFontSize(16);
+    pdf.text("Virtueller Prüfbericht", 105, startY, { align: "center" });
+    startY += 10;
+
     // Bindemittel und Rohdichten
+    pdf.setFontSize(14);
     pdf.text("Bindemittelgehalt [%]:", 10, startY);
     startY += 5;
 
@@ -121,12 +127,8 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
         body: rohData,
     });
 
-    pdf.setFontSize(16);
-    pdf.text("Virtueller Prüfbericht", 105, startY, { align: "center" });
-    startY += 10;
-
     // Raumdichten
-    pdf.setFontSize(12)
+    pdf.setFontSize(14)
     pdf.text("Raumdichten [g/cm³]:", 10, startY);
     startY += 5;
 
@@ -211,7 +213,7 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
         pdf.addPage();
         startY = 10;
         // Quiz-Ergebnisse Tabelle
-        pdf.setFontSize(14);
+        pdf.setFontSize(16);
         pdf.text("Quiz-Auswertung:", 10, startY);
         startY += 5;
 
@@ -226,7 +228,8 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
         });
 
         startY = pdf.lastAutoTable.finalY + 10;
-
+        
+        pdf.setFontSize(14);
         pdf.text(`Gesamtpunkte: ${quizPunkte} / 80`, 10, startY);
 
         // PDF speichern
@@ -259,6 +262,7 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
     startY += 10;
 
     // Eimerwerte Tabelle
+    pdf.setFontSize(14);
     pdf.text("Gesteinssieblinie [%]:", 10, startY);
     startY += 5;
 
@@ -284,7 +288,12 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
     pdf.addPage();
     startY = 10;
 
+    pdf.setFontSize(16);
+    pdf.text("Virtueller Prüfbericht", 105, startY, { align: "center" });
+    startY += 10;
+
     // Bindemittel und Rohdichten
+    pdf.setFontSize(14);
     pdf.text("Bindemittelgehalt [%]:", 10, startY);
     startY += 5;
 
@@ -309,12 +318,8 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
         body: rohData,
     });
 
-    pdf.setFontSize(16);
-    pdf.text("Virtueller Prüfbericht", 105, startY, { align: "center" });
-    startY += 10;
-
     // Raumdichten
-    pdf.setFontSize(12)
+    pdf.setFontSize(14)
     pdf.text("Raumdichten [g/cm³]:", 10, startY);
     startY += 5;
 
