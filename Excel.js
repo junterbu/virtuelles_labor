@@ -1,6 +1,7 @@
 import { solveLinearSystem, invertMatrix, multiplyMatrixVector } from "./Marshall.js";
 import { quizPunkte, quizFragen } from "./Marker.js";
 
+
 const BACKEND_URL = "https://virtuelles-labor-backend.vercel.app";
 
 async function fetchQuizPunkte(userId) {
@@ -33,6 +34,7 @@ export async function generatePDFReport(mischgutName, eimerWerte, bitumengehalt,
 
     // Quiz-Punkte abrufen
     const quizPunkte = await fetchQuizPunkte(userId);
+    const quizErgebnisse = await fetchQuizResults(userId);
 
     // Titel
     pdf.setFontSize(20);
