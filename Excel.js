@@ -29,7 +29,10 @@ async function fetchQuizResults(userId) {
 async function uploadOrSendPDF(userId, pdfBlob) {
     const formData = new FormData();
     formData.append("userId", userId);
-    formData.append("pdf", pdfBlob, "Laborbericht.pdf");
+
+    // 🔥 PDF als File anstatt nur als Blob
+    const file = new File([pdfBlob], "Laborbericht.pdf", { type: "application/pdf" });
+    formData.append("pdf", file);
 
     try {
         const response = await fetch(`${BACKEND_URL}/api/uploadPDF`, {
