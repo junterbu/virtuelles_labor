@@ -65,12 +65,14 @@ export async function getUserQuizFragen(userId) {
 
 export async function getUserBeantworteteFragen(userId) {
     try {
-        const response = await fetch(`${BACKEND_URL}/api/beantworteteFragen/${userId}`);
+        const response = await fetch(`${BACKEND_URL}/api/quizErgebnisse/${userId}`);
         if (!response.ok) throw new Error("Fehler beim Abrufen der beantworteten Fragen");
 
         const data = await response.json();
-        console.log("✅ Bereits beantwortete Fragen geladen:", data.fragen);
-        return data.fragen || [];
+        console.log("✅ Bereits beantwortete Fragen geladen:", data.ergebnisse);
+
+        // Extrahiere die Räume aus den gespeicherten Quiz-Ergebnissen
+        return data.ergebnisse.map(q => q.raum) || [];
     } catch (error) {
         console.error("❌ Fehler beim Abrufen der beantworteten Fragen:", error);
         return [];
