@@ -159,10 +159,11 @@ export async function zeigeQuiz(raum) {
             return;
         }
 
-        // Lade die gespeicherten Fragen des Nutzers
         const nutzerFragen = await getUserQuizFragen(userId);
-        if (!nutzerFragen.includes(raum)) {
-            console.log(`❌ Raum ${raum} ist nicht in den gespeicherten Fragen des Nutzers enthalten.`);
+        const beantworteteFragen = await getUserBeantworteteFragen(userId);
+
+        if (!nutzerFragen.includes(raum) || beantworteteFragen.includes(raum)) {
+            console.log(`🚫 Raum ${raum} wurde bereits beantwortet oder gehört nicht zu den Nutzerfragen.`);
             resolve();
             return;
         }
@@ -190,6 +191,7 @@ export async function zeigeQuiz(raum) {
         }
     });
 }
+
 
 export async function speicherePunkte(raum, auswahl) {
     userId = localStorage.getItem("userId");

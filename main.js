@@ -62,3 +62,17 @@ export async function getUserQuizFragen(userId) {
         return [];
     }
 }
+
+export async function getUserBeantworteteFragen(userId) {
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/beantworteteFragen/${userId}`);
+        if (!response.ok) throw new Error("Fehler beim Abrufen der beantworteten Fragen");
+
+        const data = await response.json();
+        console.log("✅ Bereits beantwortete Fragen geladen:", data.fragen);
+        return data.fragen || [];
+    } catch (error) {
+        console.error("❌ Fehler beim Abrufen der beantworteten Fragen:", error);
+        return [];
+    }
+}

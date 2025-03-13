@@ -6,7 +6,7 @@ import { isMobileDevice, scene } from './Allgemeines.js';
 import { lagerMarker, leaveproberaumMarker, proberaumlagerMarker, lagerproberaumMarker, toMischraumMarker, leaveMischraum, leavelagerMarker, toMarshallMarker, leaveMarshall, activeMarkers, markers} from "./Marker.js";
 import { VRButton } from 'three/addons/webxr/VRButton.js';
 import { zeigeQuiz, speicherePunkte, quizFragen, quizPunkte } from "./Marker.js";
-import { getUserQuizFragen } from "./main.js";
+import { getUserQuizFragen, getUserBeantworteteFragen } from "./main.js";
 // Bestimmen Sie das Event basierend auf dem Gerät
 const inputEvent = isMobileDevice() ? 'touchstart' : 'click';
 
@@ -165,10 +165,13 @@ async function starteDoppelQuiz(raum1, raum2) {
     if (!userId) return;
 
     const nutzerFragen = await getUserQuizFragen(userId);
-    if (nutzerFragen.includes(raum1)) await zeigeQuiz(raum1);
+    const beantworteteFragen = await getUserBeantworteteFragen(userId);
+
+    if (nutzerFragen.includes(raum1) && !beantworteteFragen.includes(raum1)) await zeigeQuiz(raum1);
     await new Promise(resolve => setTimeout(resolve, 700)); // Kurze Pause
-    if (nutzerFragen.includes(raum2)) await zeigeQuiz(raum2);
+    if (nutzerFragen.includes(raum2) && !beantworteteFragen.includes(raum2)) await zeigeQuiz(raum2);
 }
+
 
 export function fromLagertoProberaum() {
     currentRoom = "Gesteinsraum";

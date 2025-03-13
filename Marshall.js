@@ -8,7 +8,7 @@ import { canvasSieblinie, eimerWerte, selectedMix } from './Gesteinsraum.js';
 import { isMobileDevice } from './Allgemeines.js';
 import { generatePDFReport } from './Excel.js';
 import { zeigeQuiz } from './Marker.js';
-import { getUserQuizFragen } from './main.js';
+import { getUserQuizFragen, getUserBeantworteteFragen } from './main.js';
 
 const inputEvent = isMobileDevice() ? 'touchstart' : 'click';
 
@@ -393,10 +393,14 @@ async function starteDoppelQuiz(raum1, raum2) {
     if (!userId) return;
 
     const nutzerFragen = await getUserQuizFragen(userId);
-    if (nutzerFragen.includes(raum1)) await zeigeQuiz(raum1);
-    await new Promise(resolve => setTimeout(resolve, 500)); // Kurze Pause
-    if (nutzerFragen.includes(raum2)) await zeigeQuiz(raum2);
+    const beantworteteFragen = await getUserBeantworteteFragen(userId);
+
+    if (nutzerFragen.includes(raum1) && !beantworteteFragen.includes(raum1)) await zeigeQuiz(raum1);
+    await new Promise(resolve => setTimeout(resolve, 700)); // Kurze Pause
+    if (nutzerFragen.includes(raum2) && !beantworteteFragen.includes(raum2)) await zeigeQuiz(raum2);
 }
+
+
 
 async function playAnimation() {
     if (action) {
