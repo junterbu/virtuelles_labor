@@ -14,6 +14,17 @@ async function fetchQuizPunkte(userId) {
     }
 }
 
+async function fetchQuizResults(userId) {
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/quizErgebnisse/${userId}`);
+        const data = await response.json();
+        return data.ergebnisse || [];
+    } catch (error) {
+        console.error("Fehler beim Abrufen der Quiz-Ergebnisse:", error);
+        return [];
+    }
+}
+
 export async function generatePDFReport(mischgutName, eimerWerte, bitumengehalt, Rohdichten, raumdichten, sieblinieCanvas) {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF();
@@ -235,11 +246,27 @@ export async function generatePDFReport(mischgutName, eimerWerte, bitumengehalt,
 
         // Entfernen des temporären Canvas
         document.body.removeChild(scatterCanvas);
-        startY += 100;
-        // Punkteübersicht
+        startY += 120;
+
+        // Quiz-Ergebnisse Tabelle
         pdf.setFontSize(14);
-        pdf.text(`Erreichte Punkte: ${quizPunkte} / 80`, 10, startY);
-        startY += 10;
+        pdf.text("Quiz-Auswertung:", 10, startY);
+        startY += 5;
+
+        const quizHeaders = ["Frage", "Antwort des Nutzers", "Richtige Antwort", "Punkte"];
+        const quizData = quizErgebnisse.map(q => [q.frage, q.gegebeneAntwort, q.richtigeAntwort, q.punkte]);
+
+        pdf.autoTable({
+            startY,
+            head: [quizHeaders],
+            body: quizData,
+            styles: { fontSize: 10 }
+        });
+
+        startY = pdf.lastAutoTable.finalY + 10;
+
+        pdf.text(`Gesamtpunkte: ${quizPunkte} / 80`, 10, startY);
+
         // PDF speichern
         pdf.save("Laborbericht.pdf");
     }, 500);
