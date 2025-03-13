@@ -236,9 +236,9 @@ function berechneGesamtsieblinie() {
 function zeichneSieblinie(sieblinie) {
     let canvasWidth = 512;
     let canvasHeight = 256;
-    let paddingLeft = 50;  // Abstand links für Y-Achsen-Beschriftung
-    let paddingBottom = 30;  // Abstand unten für X-Achsen-Beschriftung
-    let paddingTop = 30;  // Abstand oben für Titel
+    let paddingLeft = 70;  // Abstand links für Y-Achsen-Beschriftung
+    let paddingBottom = 50;  // Abstand unten für X-Achsen-Beschriftung
+    let paddingTop = 50;  // Abstand oben für Titel
     let paddingRight = 20;  // Rechter Rand
 
     canvasSieblinie = document.createElement('canvas');
@@ -287,7 +287,7 @@ function zeichneSieblinie(sieblinie) {
 
     // Y-Achse vertikale Beschriftung (Drehen)
     contextSieblinie.save();
-    contextSieblinie.translate(15, canvasHeight / 2);
+    contextSieblinie.translate(10, canvasHeight / 2);
     contextSieblinie.rotate(-Math.PI / 2);
     contextSieblinie.textAlign = 'center';
     contextSieblinie.fillText("Siebdurchgang [M%]", 0, 0);
@@ -332,6 +332,31 @@ function zeichneSieblinie(sieblinie) {
     contextSieblinie.font = '16px Arial';
     contextSieblinie.fillText("Sieblinie", canvasSieblinie.width / 2, 5);  // Titel über dem Diagramm
 
+    // 🔥 Legende zeichnen (direkt unter dem Titel)
+    let legendX = canvasWidth / 2 - 80;
+    let legendY = 25;
+
+    contextSieblinie.fillStyle = 'black';
+    contextSieblinie.fillText("Legende:", legendX, legendY);
+
+    // 🔴 Grenzlinie (roter Strich)
+    contextSieblinie.strokeStyle = 'red';
+    contextSieblinie.lineWidth = 2;
+    contextSieblinie.beginPath();
+    contextSieblinie.moveTo(legendX + 50, legendY);
+    contextSieblinie.lineTo(legendX + 80, legendY);
+    contextSieblinie.stroke();
+    contextSieblinie.fillText("Grenzsieblinien", legendX + 90, legendY);
+
+    // 🟢 Ist-Sieblinie (grüner Strich)
+    legendY += 15;
+    contextSieblinie.strokeStyle = 'green';
+    contextSieblinie.beginPath();
+    contextSieblinie.moveTo(legendX + 50, legendY);
+    contextSieblinie.lineTo(legendX + 80, legendY);
+    contextSieblinie.stroke();
+    contextSieblinie.fillText("Ist - Sieblinie", legendX + 90, legendY);
+
     // **Obere Grenz-Sieblinie** definieren (fiktive Werte, bitte anpassen)
     let obereGrenze = aktuelleGrenzen.obereGrenze;
     
@@ -368,23 +393,6 @@ function zeichneSieblinie(sieblinie) {
     }
     contextSieblinie.stroke();
 
-    // 🔥 Legende zeichnen
-    let legendX = canvasWidth - 140;
-    let legendY = canvasHeight + 10;
-
-    // Sieblinie (grün)
-    contextSieblinie.fillStyle = 'green';
-    contextSieblinie.fillRect(legendX, legendY, 15, 3);
-    contextSieblinie.fillStyle = 'black';
-    contextSieblinie.fillText("Sieblinie", legendX + 25, legendY + 3);
-
-    // Grenzlinien (rot)
-    legendY += 15;
-    contextSieblinie.fillStyle = 'red';
-    contextSieblinie.fillRect(legendX, legendY, 15, 3);
-    contextSieblinie.fillStyle = 'black';
-    contextSieblinie.fillText("Grenzlinien", legendX + 25, legendY + 3);
-    
     return canvasSieblinie;
 }
 
