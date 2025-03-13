@@ -35,7 +35,7 @@ export async function generatePDFReport(mischgutName, eimerWerte, bitumengehalt,
 
     // Punkteübersicht
     pdf.setFontSize(14);
-    pdf.text(`Erreichte Punkte: ${quizPunkte} / ${Object.values(quizFragen).reduce((sum, frage) => sum + frage.punkte, 0)}`, 10, startY);
+    pdf.text(`Erreichte Punkte: ${quizPunkte} / 80`, 10, startY);
     startY += 10;
 
     // Eimerwerte Tabelle
