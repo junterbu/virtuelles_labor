@@ -238,7 +238,7 @@ function zeichneSieblinie(sieblinie) {
     let canvasHeight = 256;
     let paddingLeft = 70;  // Abstand links für Y-Achsen-Beschriftung
     let paddingBottom = 20;  // Abstand unten für X-Achsen-Beschriftung
-    let paddingTop = 50;  // Abstand oben für Titel
+    let paddingTop = 60;  // Abstand oben für Titel
     let paddingRight = 20;  // Rechter Rand
 
     canvasSieblinie = document.createElement('canvas');
