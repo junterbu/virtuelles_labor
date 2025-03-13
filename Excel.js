@@ -30,7 +30,7 @@ async function uploadOrSendPDF(userId, pdfBlob) {
     const formData = new FormData();
     formData.append("userId", userId);
 
-    // 🔥 PDF als File anstatt nur als Blob
+    // 🔥 PDF korrekt als Datei (`File`) senden
     const file = new File([pdfBlob], "Laborbericht.pdf", { type: "application/pdf" });
     formData.append("pdf", file);
 
@@ -46,6 +46,7 @@ async function uploadOrSendPDF(userId, pdfBlob) {
         console.error("❌ Fehler beim Hochladen/Senden des PDFs:", error);
     }
 }
+
 
 export async function generatePDFReport(mischgutName, eimerWerte, bitumengehalt, Rohdichten, raumdichten, sieblinieCanvas) {
     const { jsPDF } = window.jspdf;
