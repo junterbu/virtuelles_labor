@@ -418,7 +418,7 @@ async function playAnimation() {
 
         // Erst dann PDF generieren
         generatePDFReportextern(selectedMix, eimerWerte, bitumengehalt, Rohdichten, raumdichten, canvasSieblinie);
-        generatePDFReportintern(selectedMix, eimerWerte, bitumengehalt, Rohdichten, raumdichten, canvasSieblinie);
+        //generatePDFReportintern(selectedMix, eimerWerte, bitumengehalt, Rohdichten, raumdichten, canvasSieblinie);
     }
 }
 
