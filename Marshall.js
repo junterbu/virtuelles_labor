@@ -6,7 +6,7 @@ import { renderer, camera } from './View_functions.js';
 import { Rohdichten, bitumenAnteil, bitumengehalt, dichteBitumen } from './Mischraum.js';
 import { canvasSieblinie, eimerWerte, selectedMix } from './Gesteinsraum.js';
 import { isMobileDevice } from './Allgemeines.js';
-import { generatePDFReport } from './Excel.js';
+import { generatePDFReportintern, generatePDFReportextern } from './Excel.js';
 import { zeigeQuiz } from './Marker.js';
 import { getUserQuizFragen, getNextTwoQuestions } from './main.js';
 
@@ -417,7 +417,8 @@ async function playAnimation() {
         await warteAufAnimation();
 
         // Erst dann PDF generieren
-        generatePDFReport(selectedMix, eimerWerte, bitumengehalt, Rohdichten, raumdichten, canvasSieblinie);
+        generatePDFReportextern(selectedMix, eimerWerte, bitumengehalt, Rohdichten, raumdichten, canvasSieblinie);
+        generatePDFReportintern(selectedMix, eimerWerte, bitumengehalt, Rohdichten, raumdichten, canvasSieblinie);
     }
 }
 
