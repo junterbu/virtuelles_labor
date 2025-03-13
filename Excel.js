@@ -205,7 +205,6 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
 
         // Entfernen des temporären Canvas
         document.body.removeChild(scatterCanvas);
-        startY += 120;
         pdf.addPage();
         // Quiz-Ergebnisse Tabelle
         pdf.setFontSize(14);
@@ -453,7 +452,6 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
 
         // Entfernen des temporären Canvas
         document.body.removeChild(scatterCanvas);
-        startY += 120;
         pdf.addPage();
         // Quiz-Ergebnisse Tabelle
         pdf.setFontSize(14);
