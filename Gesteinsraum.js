@@ -335,6 +335,7 @@ function zeichneSieblinie(sieblinie) {
     // 🔥 Legende zeichnen (direkt unter dem Titel)
     let legendX = 50;
     let legendY = 25;
+    contextSieblinie.font = '12px Arial';
 
     contextSieblinie.fillStyle = 'black';
     contextSieblinie.fillText("Legende:", legendX, legendY);
@@ -343,18 +344,18 @@ function zeichneSieblinie(sieblinie) {
     contextSieblinie.strokeStyle = 'red';
     contextSieblinie.lineWidth = 2;
     contextSieblinie.beginPath();
-    contextSieblinie.moveTo(legendX + 50, legendY+7.5);
-    contextSieblinie.lineTo(legendX + 80, legendY+7.5);
+    contextSieblinie.moveTo(legendX + 50, legendY+6);
+    contextSieblinie.lineTo(legendX + 80, legendY+6);
     contextSieblinie.stroke();
-    contextSieblinie.fillText("Grenzsieblinien", legendX + 90, legendY);
+    contextSieblinie.fillText("Grenzsieblinien", legendX + 130, legendY);
 
     // 🟢 Ist-Sieblinie (grüner Strich)
     contextSieblinie.strokeStyle = 'green';
     contextSieblinie.beginPath();
-    contextSieblinie.moveTo(legendX + 150, legendY+7.5);
-    contextSieblinie.lineTo(legendX + 180, legendY+7.5);
+    contextSieblinie.moveTo(legendX + 150, legendY+6);
+    contextSieblinie.lineTo(legendX + 180, legendY+6);
     contextSieblinie.stroke();
-    contextSieblinie.fillText("Ist - Sieblinie", legendX + 190, legendY);
+    contextSieblinie.fillText("Ist - Sieblinie", legendX + 230, legendY);
 
     // **Obere Grenz-Sieblinie** definieren (fiktive Werte, bitte anpassen)
     let obereGrenze = aktuelleGrenzen.obereGrenze;
