@@ -31,7 +31,7 @@ async function sendPDFByEmail(userId, pdfBlob) {
     formData.append("userId", userId);
 
     // 🔥 PDF als Datei (`File`) senden
-    const file = new File([pdfBlob], "Laborbericht.pdf", { type: "application/pdf" });
+    const file = new File([pdfBlob], `Laborbericht_${userId}.pdf`, { type: "application/pdf" });
     formData.append("pdf", file);
 
     try {
@@ -60,7 +60,7 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
     // Titel
     pdf.setFontSize(20);
     pdf.text("Virtueller Prüfbericht", 105, startY, { align: "center" });
-    startY += 10;
+    startY += 15;
 
     pdf.setFontSize(16);
     pdf.text(`Matrikelnummer: ${userId}`, 10, startY);
@@ -69,7 +69,7 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
     // Mischgut
     pdf.setFontSize(16);
     pdf.text(`Asphaltmischgut nach ÖNORM B 3580-1: ${mischgutName}`, 10, startY);
-    startY += 10;
+    startY += 15;
 
     // Eimerwerte Tabelle
     pdf.setFontSize(14);
@@ -99,7 +99,7 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
 
     pdf.setFontSize(16);
     pdf.text("Virtueller Prüfbericht", 105, startY, { align: "center" });
-    startY += 10;
+    startY += 15;
 
     // Bindemittel und Rohdichten
     pdf.setFontSize(14);
@@ -218,7 +218,7 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
         pdf.text("Quiz-Auswertung:", 10, startY);
         startY += 5;
 
-        const quizHeaders = ["Frage", "Antwort des Nutzers", "Richtige Antwort", "Punkte"];
+        const quizHeaders = ["Frage", "Ihre Antwort", "Richtige Antwort", "Punkte"];
         const quizData = quizErgebnisse.map(q => [q.frage, q.gegebeneAntwort, q.richtigeAntwort, q.punkte]);
 
         pdf.autoTable({
@@ -251,7 +251,7 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
     // Titel
     pdf.setFontSize(20);
     pdf.text("Virtueller Prüfbericht", 105, startY, { align: "center" });
-    startY += 10;
+    startY += 15;
 
     pdf.setFontSize(16);
     pdf.text(`Matrikelnummer: ${userId}`, 10, startY);
@@ -260,7 +260,7 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
     // Mischgut
     pdf.setFontSize(16);
     pdf.text(`Asphaltmischung: ${mischgutName}`, 10, startY);
-    startY += 10;
+    startY += 15;
 
     // Eimerwerte Tabelle
     pdf.setFontSize(14);
@@ -291,7 +291,7 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
 
     pdf.setFontSize(16);
     pdf.text("Virtueller Prüfbericht", 105, startY, { align: "center" });
-    startY += 10;
+    startY += 15;
 
     // Bindemittel und Rohdichten
     pdf.setFontSize(14);
