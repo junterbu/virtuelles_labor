@@ -336,7 +336,7 @@ function zeichneSieblinie(sieblinie) {
     let legendX = 50;
     let legendY = 25;
     contextSieblinie.font = '12px Arial';
-
+    contextSieblinie.textAlign = 'left';
     contextSieblinie.fillStyle = 'black';
     contextSieblinie.fillText("Legende:", legendX, legendY);
 
