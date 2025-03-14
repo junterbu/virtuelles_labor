@@ -516,8 +516,6 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
         pdf.text(`Gesamtpunkte: ${quizPunkte} / 80`, 10, startY);
 
 
-
-
         // **📤 2. PDF speichern oder senden**
         const pdfBlob = pdf.output("blob");
 
