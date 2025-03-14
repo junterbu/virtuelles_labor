@@ -53,8 +53,7 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
     const pdf = new jsPDF({
         orientation: "portrait",
         unit: "mm",
-        format: "a4",
-        compress: true, // 🔥 aktiviert die Komprimierung
+        format: "a4"
     });
     let startY = 10;
     const userId = localStorage.getItem("userId") || "Gast";
