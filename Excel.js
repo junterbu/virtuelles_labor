@@ -26,24 +26,25 @@ async function fetchQuizResults(userId) {
     }
 }
 
-async function sendPDFByEmail(userId, pdfBlob) {
+async function uploadPDFToCloud(userId, pdfBlob) {
     const formData = new FormData();
     formData.append("userId", userId);
 
-    // 🔥 PDF als Datei (`File`) senden
-    const file = new File([pdfBlob], `Laborbericht_${userId}.pdf`, { type: "application/pdf" });
+    // 🔥 PDF als Datei senden
+    const file = new File([pdfBlob], `Prüfbericht_${userId}.pdf`, { type: "application/pdf" });
     formData.append("pdf", file);
 
     try {
-        const response = await fetch(`${BACKEND_URL}/api/sendEmail`, {
+        const response = await fetch(`${BACKEND_URL}/api/uploadPDF`, {
             method: "POST",
             body: formData
         });
 
         const result = await response.json();
-        console.log("✅ PDF erfolgreich per E-Mail gesendet:", result);
+        console.log("✅ PDF erfolgreich gespeichert:", result);
+        alert(`PDF gespeichert! Zugriff unter: ${result.url}`);
     } catch (error) {
-        console.error("❌ Fehler beim Senden des PDFs per E-Mail:", error);
+        console.error("❌ Fehler beim Hochladen des PDFs:", error);
     }
 }
 
@@ -509,6 +510,6 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
         const pdfBlob = pdf.output("blob");
 
         // Speichern in Firebase oder per E-Mail senden
-        sendPDFByEmail(userId, pdfBlob);
+        uploadPDFToCloud(userId, pdfBlob)
     }, 500);
 }
