@@ -33,7 +33,8 @@ async function sendPDFByEmail(userId, pdfBlob) {
     // 🔥 PDF als Datei (`File`) senden
     const file = new File([pdfBlob], `Laborbericht_${userId}.pdf`, { type: "application/pdf" });
     formData.append("pdf", file);
-
+    console.log("📄 Sende Datei:", file.name, "Größe:", file.size);
+    
     try {
         const response = await fetch(`${BACKEND_URL}/api/sendEmail`, {
             method: "POST",
