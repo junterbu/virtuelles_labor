@@ -26,58 +26,26 @@ async function fetchQuizResults(userId) {
     }
 }
 
-async function uploadPDFToCloud(userId, pdfBlob) {
-    const CHUNK_SIZE = 5 * 1024 * 1024; // 5MB pro Chunk
-    const fileName = `Prüfbericht_${userId}.pdf`;
-    const totalChunks = Math.ceil(pdfBlob.size / CHUNK_SIZE);
+async function sendPDFByEmail(userId, pdfBlob) {
+    const formData = new FormData();
+    formData.append("userId", userId);
 
-    console.log(`📂 PDF wird in ${totalChunks} Chunks aufgeteilt...`);
+    // 🔥 PDF als Datei (`File`) senden
+    const file = new File([pdfBlob], `Laborbericht_${userId}.pdf`, { type: "application/pdf" });
+    formData.append("pdf", file);
 
-    for (let i = 0; i < totalChunks; i++) {
-        const start = i * CHUNK_SIZE;
-        const end = Math.min(start + CHUNK_SIZE, pdfBlob.size);
-        const chunk = pdfBlob.slice(start, end);
-
-        const formData = new FormData();
-        formData.append("userId", userId);
-        formData.append("fileName", fileName);
-        formData.append("chunkIndex", i);
-        formData.append("totalChunks", totalChunks);
-        formData.append("chunk", chunk, `chunk_${i}.part`);
-
-        try {
-            const response = await fetch(`${BACKEND_URL}/api/uploadChunk`, {
-                method: "POST",
-                body: formData
-            });
-
-            const result = await response.json();
-            console.log(result.message);
-        } catch (error) {
-            console.error(`❌ Fehler beim Hochladen von Chunk ${i + 1}:`, error);
-            return;
-        }
-    }
-
-    console.log("📦 Alle Chunks hochgeladen! Datei wird nun zusammengefügt...");
-
-    // 🔥 Nach dem Hochladen aller Chunks den Merge-Prozess starten
     try {
-        const mergeResponse = await fetch(`${BACKEND_URL}/api/mergeChunks`, {
+        const response = await fetch(`${BACKEND_URL}/api/sendEmail`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userId, fileName, totalChunks })
+            body: formData
         });
 
-        const mergeResult = await mergeResponse.json();
-        console.log("✅ PDF erfolgreich gespeichert:", mergeResult);
-        alert(`PDF gespeichert! Zugriff unter: ${mergeResult.url}`);
-
+        const result = await response.json();
+        console.log("✅ PDF erfolgreich per E-Mail gesendet:", result);
     } catch (error) {
-        console.error("❌ Fehler beim Zusammenfügen der Datei:", error);
+        console.error("❌ Fehler beim Senden des PDFs per E-Mail:", error);
     }
 }
-
 
 export async function generatePDFReportextern(mischgutName, eimerWerte, bitumengehalt, Rohdichten, raumdichten, sieblinieCanvas) {
     const { jsPDF } = window.jspdf;
@@ -261,7 +229,7 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
         });
 
         startY = pdf.lastAutoTable.finalY + 10;
-        
+
         pdf.setFontSize(14);
         pdf.text(`Gesamtpunkte: ${quizPunkte} / 80`, 10, startY);
 
@@ -388,13 +356,13 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
         let Bx = bitumengehalt[1];
         let Cx = bitumengehalt[2];
 
-        
+
 
         let Ay = raumdichten[0];
         let By = raumdichten[1];
         let Cy = raumdichten[2];
 
-     
+
         // Erstelle die Matrix A und den Vektor B
         let A = [
             [Ax ** 2, Ax, 1],
@@ -402,7 +370,7 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
             [Cx ** 2, Cx, 1]
         ];
         let B = [Ay, By, Cy];
-    
+
         // Löse das lineare Gleichungssystem Ax = B für x (also für a, b, c)
         let [a, b, c] = solveLinearSystem(A, B);
         return [a,b,c];
@@ -541,6 +509,6 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
         const pdfBlob = pdf.output("blob");
 
         // Speichern in Firebase oder per E-Mail senden
-        uploadPDFToCloud(userId, pdfBlob)
+        sendPDFByEmail(userId, pdfBlob);
     }, 500);
 }
