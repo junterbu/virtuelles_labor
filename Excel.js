@@ -30,8 +30,7 @@ async function uploadPDFToCloud(userId, pdfBlob) {
     const formData = new FormData();
     formData.append("userId", userId);
 
-    // 🔥 PDF als Datei senden
-    const file = new File([pdfBlob], `Bericht_${userId}.pdf`, { type: "application/pdf" });
+    const file = new File([pdfBlob], `Prüfbericht_${userId}.pdf`, { type: "application/pdf" });
     formData.append("pdf", file);
 
     try {
@@ -40,7 +39,13 @@ async function uploadPDFToCloud(userId, pdfBlob) {
             body: formData
         });
 
-        const result = await response.json();
+        // 🔥 Check: Ist die Antwort wirklich JSON?
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+            throw new Error("Ungültige Serverantwort (kein JSON)");
+        }
+
+        const result = await response.json(); // 🚀 Jetzt ist es sicher zu parsen
         console.log("✅ PDF erfolgreich gespeichert:", result);
         alert(`PDF gespeichert! Zugriff unter: ${result.url}`);
     } catch (error) {
