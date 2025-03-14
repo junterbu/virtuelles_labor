@@ -31,7 +31,7 @@ async function uploadPDFToCloud(userId, pdfBlob) {
     formData.append("userId", userId);
 
     // 🔥 PDF als Datei senden
-    const file = new File([pdfBlob], `Prüfbericht_${userId}.pdf`, { type: "application/pdf" });
+    const file = new File([pdfBlob], `Bericht_${userId}.pdf`, { type: "application/pdf" });
     formData.append("pdf", file);
 
     try {
