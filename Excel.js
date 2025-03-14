@@ -27,7 +27,7 @@ async function fetchQuizResults(userId) {
 }
 
 async function uploadPDFToCloud(userId, pdfBlob) {
-    const CHUNK_SIZE = 5 * 1024 * 1024; // 🔥 5MB pro Chunk
+    const CHUNK_SIZE = 5 * 1024 * 1024; // 5MB pro Chunk
     const fileName = `Prüfbericht_${userId}.pdf`;
     const totalChunks = Math.ceil(pdfBlob.size / CHUNK_SIZE);
 
@@ -77,6 +77,7 @@ async function uploadPDFToCloud(userId, pdfBlob) {
         console.error("❌ Fehler beim Zusammenfügen der Datei:", error);
     }
 }
+
 
 export async function generatePDFReportextern(mischgutName, eimerWerte, bitumengehalt, Rohdichten, raumdichten, sieblinieCanvas) {
     const { jsPDF } = window.jspdf;
