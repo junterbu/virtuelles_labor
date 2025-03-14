@@ -27,33 +27,54 @@ async function fetchQuizResults(userId) {
 }
 
 async function uploadPDFToCloud(userId, pdfBlob) {
-    const formData = new FormData();
-    formData.append("userId", userId);
+    const CHUNK_SIZE = 5 * 1024 * 1024; // 🔥 5MB pro Chunk
+    const fileName = `Prüfbericht_${userId}.pdf`;
+    const totalChunks = Math.ceil(pdfBlob.size / CHUNK_SIZE);
 
-    const file = new File([pdfBlob], `Prüfbericht_${userId}.pdf`, { type: "application/pdf" });
-    formData.append("pdf", file);
+    console.log(`📂 PDF wird in ${totalChunks} Chunks aufgeteilt...`);
 
+    for (let i = 0; i < totalChunks; i++) {
+        const start = i * CHUNK_SIZE;
+        const end = Math.min(start + CHUNK_SIZE, pdfBlob.size);
+        const chunk = pdfBlob.slice(start, end);
+
+        const formData = new FormData();
+        formData.append("userId", userId);
+        formData.append("fileName", fileName);
+        formData.append("chunkIndex", i);
+        formData.append("totalChunks", totalChunks);
+        formData.append("chunk", chunk, `chunk_${i}.part`);
+
+        try {
+            const response = await fetch(`${BACKEND_URL}/api/uploadChunk`, {
+                method: "POST",
+                body: formData
+            });
+
+            const result = await response.json();
+            console.log(result.message);
+        } catch (error) {
+            console.error(`❌ Fehler beim Hochladen von Chunk ${i + 1}:`, error);
+            return;
+        }
+    }
+
+    console.log("📦 Alle Chunks hochgeladen! Datei wird nun zusammengefügt...");
+
+    // 🔥 Nach dem Hochladen aller Chunks den Merge-Prozess starten
     try {
-        const response = await fetch(`${BACKEND_URL}/api/uploadPDF`, {
+        const mergeResponse = await fetch(`${BACKEND_URL}/api/mergeChunks`, {
             method: "POST",
-            body: formData
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId, fileName, totalChunks })
         });
 
-        // 🔥 Debugging: Gib den gesamten Response-Text aus
-        const responseText = await response.text();
-        console.log("📜 Serverantwort:", responseText);
+        const mergeResult = await mergeResponse.json();
+        console.log("✅ PDF erfolgreich gespeichert:", mergeResult);
+        alert(`PDF gespeichert! Zugriff unter: ${mergeResult.url}`);
 
-        // Prüfe den Inhaltstyp
-        const contentType = response.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-            throw new Error("Ungültige Serverantwort (kein JSON)");
-        }
-
-        const result = JSON.parse(responseText);
-        console.log("✅ PDF erfolgreich gespeichert:", result);
-        alert(`PDF gespeichert! Zugriff unter: ${result.url}`);
     } catch (error) {
-        console.error("❌ Fehler beim Hochladen des PDFs:", error);
+        console.error("❌ Fehler beim Zusammenfügen der Datei:", error);
     }
 }
 
