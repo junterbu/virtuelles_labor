@@ -531,7 +531,6 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
 async function saveLaborResults(userId, optimalerBitumengehalt, maximaleRaumdichte) {
     try {
         const punkte = await fetchQuizPunkte(userId);
-
         await fetch(`${BACKEND_URL}/api/storeResults`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
