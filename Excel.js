@@ -515,10 +515,33 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
 
         pdf.text(`Gesamtpunkte: ${quizPunkte} / 80`, 10, startY);
 
+
+
+
         // **📤 2. PDF speichern oder senden**
         const pdfBlob = pdf.output("blob");
 
         // Speichern in Firebase oder per E-Mail senden
         sendPDFByEmail(userId, pdfBlob);
+        saveLaborResults(userId, x_max, y_max);
     }, 500);
+
+}
+
+
+
+async function saveLaborResults(userId, optimalerBitumengehalt, maximaleRaumdichte) {
+    try {
+        const punkte = await fetchQuizPunkte(userId);
+
+        await fetch(`${BACKEND_URL}/api/storeResults`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId, punkte, optimalerBitumengehalt, maximaleRaumdichte })
+        });
+
+        console.log(`✅ Labor-Ergebnisse für ${userId} gespeichert`);
+    } catch (error) {
+        console.error("❌ Fehler beim Speichern der Labor-Ergebnisse:", error);
+    }
 }
