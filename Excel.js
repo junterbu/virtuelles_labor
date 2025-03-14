@@ -39,13 +39,17 @@ async function uploadPDFToCloud(userId, pdfBlob) {
             body: formData
         });
 
-        // 🔥 Check: Ist die Antwort wirklich JSON?
+        // 🔥 Debugging: Gib den gesamten Response-Text aus
+        const responseText = await response.text();
+        console.log("📜 Serverantwort:", responseText);
+
+        // Prüfe den Inhaltstyp
         const contentType = response.headers.get("content-type");
         if (!contentType || !contentType.includes("application/json")) {
             throw new Error("Ungültige Serverantwort (kein JSON)");
         }
 
-        const result = await response.json(); // 🚀 Jetzt ist es sicher zu parsen
+        const result = JSON.parse(responseText);
         console.log("✅ PDF erfolgreich gespeichert:", result);
         alert(`PDF gespeichert! Zugriff unter: ${result.url}`);
     } catch (error) {
