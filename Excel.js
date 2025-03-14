@@ -34,7 +34,7 @@ async function sendPDFByEmail(userId, pdfBlob) {
     const file = new File([pdfBlob], `Laborbericht_${userId}.pdf`, { type: "application/pdf" });
     formData.append("pdf", file);
     console.log("📄 Sende Datei:", file.name, "Größe:", file.size);
-    
+
     try {
         const response = await fetch(`${BACKEND_URL}/api/sendEmail`, {
             method: "POST",
@@ -50,7 +50,12 @@ async function sendPDFByEmail(userId, pdfBlob) {
 
 export async function generatePDFReportextern(mischgutName, eimerWerte, bitumengehalt, Rohdichten, raumdichten, sieblinieCanvas) {
     const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF();
+    const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+        compress: true, // 🔥 aktiviert die Komprimierung
+    });
     let startY = 10;
     const userId = localStorage.getItem("userId") || "Gast";
 
@@ -241,7 +246,12 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
 
 export async function generatePDFReportintern(mischgutName, eimerWerte, bitumengehalt, Rohdichten, raumdichten, sieblinieCanvas) {
     const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF();
+    const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+        compress: true, // 🔥 aktiviert die Komprimierung
+    });
     let startY = 10;
     const userId = localStorage.getItem("userId") || "Gast";
 
@@ -281,7 +291,7 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
     if (sieblinieCanvas) {
         pdf.text("Sieblinie:", 10, startY);
         startY += 5;
-        const sieblinieImage = sieblinieCanvas.toDataURL("image/png");
+        const sieblinieImage = sieblinieCanvas.toDataURL("image/png", 0.5);
         pdf.addImage(sieblinieImage, "PNG", 10, startY, 180, 100);
     }
 
