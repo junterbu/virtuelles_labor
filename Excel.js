@@ -400,7 +400,7 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
    // Prüfen, ob die Punkte auf der Trendlinie liegen
     bitumengehalt.forEach((x, i) => {
         const y_check = a * x ** 2 + x * b + c;
-        console.log(`x: ${b}, y (Mittelwert): ${mittelwert[i]}, y (Trendlinie): ${y_check}`);
+        console.log(`x: ${x}, y (Mittelwert): ${mittelwert[i]}, y (Trendlinie): ${y_check}`);
     });
 
     // Berechnung des optimalen Bindemittelgehalts
