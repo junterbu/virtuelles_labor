@@ -41,7 +41,6 @@ async function sendPDFByEmail(userId, pdfBlob) {
         });
 
         const result = await response.json();
-        console.log("✅ PDF erfolgreich in Vercel Storage gespeichert:", result);
     } catch (error) {
         console.error("❌ Fehler beim Speichern des PDFs in Vercel Storage:", error);
     }
