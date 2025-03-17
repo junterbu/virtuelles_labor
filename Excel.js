@@ -344,8 +344,8 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
 
     // Scatterplot als Canvas generieren
     const scatterCanvas = document.createElement("canvas");
-    scatterCanvas.width = 400;
-    scatterCanvas.height = 300;
+    scatterCanvas.width = 600;
+    scatterCanvas.height = 400;
     document.body.appendChild(scatterCanvas);
 
     const ctx = scatterCanvas.getContext("2d");
@@ -428,8 +428,8 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
                 {
                     label: "Raumdichte [g/cm³]",
                     data: bitumengehalt.map((b, i) => ({
-                        x: b,
-                        y: mittelwert[i]
+                        x: parseFloat(b),
+                        y: parseFloat(mittelwert[i]) // Sicherstellen, dass Y-Wert korrekt übergeben wird
                     })),
                     backgroundColor: "blue",
                     pointRadius: 6
@@ -447,6 +447,8 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
             ]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 x: {
                     title: { display: true, text: "Bitumengehalt [%]" },
@@ -455,6 +457,7 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
                 },
                 y: {
                     title: { display: true, text: "Raumdichte [g/cm³]" },
+                    beginAtZero: false,
                     min: yMin,
                     max: yMax
                 }
