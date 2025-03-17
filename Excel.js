@@ -359,7 +359,7 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
 
     let mittelwert = berechneMittelwerte(raumdichten)
 
-    console.log(mittelwert)
+    console.log("This is the:", mittelwert)
 
     function findPoint(raumdichten, bitumengehalt) {
         let Ax = bitumengehalt[0];
