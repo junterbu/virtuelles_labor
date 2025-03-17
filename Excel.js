@@ -353,7 +353,7 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
     function berechneMittelwerte(raumdichten) {
         return raumdichten.map(row => {
             const sum = row.reduce((acc, val) => acc + parseFloat(val), 0);
-            return (sum / row.length).toFixed(3); // Mittelwert berechnen & auf 3 Nachkommastellen runden
+            return parseFloat((sum / row.length).toFixed(3)); // Mittelwert berechnen & auf 3 Nachkommastellen runden
         });
     }
 
@@ -368,9 +368,9 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
 
 
 
-        let Ay = raumdichten[0];
-        let By = raumdichten[1];
-        let Cy = raumdichten[2];
+        let Ay = parseFloat(raumdichten[0]); // Hier parseFloat hinzufügen
+        let By = parseFloat(raumdichten[1]);
+        let Cy = parseFloat(raumdichten[2]);
 
 
         // Erstelle die Matrix A und den Vektor B
