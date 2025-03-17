@@ -29,22 +29,21 @@ async function fetchQuizResults(userId) {
 async function sendPDFByEmail(userId, pdfBlob) {
     const formData = new FormData();
     formData.append("userId", userId);
-
-    // 🔥 PDF als Datei (`File`) senden
-    const file = new File([pdfBlob], `Laborbericht_${userId}.pdf`, { type: "application/pdf" });
+    
+    // PDF als Datei (`File`) anfügen
+    const file = new File([pdfBlob], `Pruefbericht_${userId}.pdf`, { type: "application/pdf" });
     formData.append("pdf", file);
-    console.log("📄 Sende Datei:", file.name, "Größe:", file.size);
 
     try {
-        const response = await fetch(`${BACKEND_URL}/api/sendEmail`, {
+        const response = await fetch(`${BACKEND_URL}/api/uploadPDF`, {
             method: "POST",
             body: formData
         });
 
         const result = await response.json();
-        console.log("✅ PDF erfolgreich per E-Mail gesendet:", result);
+        console.log("✅ PDF erfolgreich in Vercel Storage gespeichert:", result);
     } catch (error) {
-        console.error("❌ Fehler beim Senden des PDFs per E-Mail:", error);
+        console.error("❌ Fehler beim Speichern des PDFs in Vercel Storage:", error);
     }
 }
 
