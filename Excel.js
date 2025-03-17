@@ -431,16 +431,16 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
                     backgroundColor: "blue",
                     pointRadius: 6
                 },
-                {
-                    label: "Trendlinie",
-                    data: trendData,
-                    borderColor: "grey",
-                    borderWidth: 3,
-                    borderDash: [1, 1], // Punktierte Linie
-                    fill: false,
-                    type: "line",
-                    pointRadius: 0
-                }
+                // {
+                //     label: "Trendlinie",
+                //     data: trendData,
+                //     borderColor: "grey",
+                //     borderWidth: 3,
+                //     borderDash: [1, 1], // Punktierte Linie
+                //     fill: false,
+                //     type: "line",
+                //     pointRadius: 0
+                // }
             ]
         },
         options: {
