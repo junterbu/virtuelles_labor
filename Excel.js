@@ -418,6 +418,9 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
         console.log(`x: ${x}, Erwartet y: ${y}, Berechnet y: ${y_predicted}`);
     });
 
+    const yMin = Math.min(...mittelwert) - 0.05;
+    const yMax = Math.max(...mittelwert) + 0.05;
+
     new Chart(ctx, {
         type: "scatter",
         data: {
@@ -431,58 +434,29 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
                     backgroundColor: "blue",
                     pointRadius: 6
                 },
-                // {
-                //     label: "Trendlinie",
-                //     data: trendData,
-                //     borderColor: "grey",
-                //     borderWidth: 3,
-                //     borderDash: [1, 1], // Punktierte Linie
-                //     fill: false,
-                //     type: "line",
-                //     pointRadius: 0
-                // }
+                {
+                    label: "Trendlinie",
+                    data: trendData,
+                    borderColor: "grey",
+                    borderWidth: 3,
+                    borderDash: [1, 1], // Punktierte Linie
+                    fill: false,
+                    type: "line",
+                    pointRadius: 0
+                }
             ]
         },
         options: {
-            plugins: {
-                legend: {
-                    labels: {
-                        font: {
-                            size: 18 // Größere Schriftgröße für die Legende
-                        }
-                    }
-                }
-            },
             scales: {
                 x: {
-                    title: { 
-                        display: true, 
-                        text: "Bitumengehalt [%]",
-                        font: {
-                            size: 18 // Größere Schriftgröße für X-Achse
-                        }
-                    },
-                    ticks: {
-                        font: {
-                            size: 16 // Größere Wertebeschriftung auf der X-Achse
-                        }
-                    },
+                    title: { display: true, text: "Bitumengehalt [%]" },
                     min: 3,
                     max: 7
                 },
                 y: {
-                    title: { 
-                        display: true, 
-                        text: "Raumdichte [g/cm³]",
-                        font: {
-                            size: 18 // Größere Schriftgröße für Y-Achse
-                        }
-                    },
-                    ticks: {
-                        font: {
-                            size: 16 // Größere Wertebeschriftung auf der Y-Achse
-                        }
-                    },
+                    title: { display: true, text: "Raumdichte [g/cm³]" },
+                    min: yMin,
+                    max: yMax
                 }
             }
         }
