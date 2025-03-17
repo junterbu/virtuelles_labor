@@ -467,8 +467,6 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
                             size: 16 // Größere Wertebeschriftung auf der Y-Achse
                         }
                     },
-                    min: 2.1,
-                    max: 2.7
                 }
             }
         }
