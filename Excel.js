@@ -398,8 +398,8 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
     }
 
    // Prüfen, ob die Punkte auf der Trendlinie liegen
-    bitumengehalt.forEach((b, i) => {
-        const y_check = a * b ** 2 + b * b + c;
+    bitumengehalt.forEach((x, i) => {
+        const y_check = a * x ** 2 + x * b + c;
         console.log(`x: ${b}, y (Mittelwert): ${mittelwert[i]}, y (Trendlinie): ${y_check}`);
     });
 
