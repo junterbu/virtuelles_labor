@@ -59,7 +59,6 @@ window.addEventListener(inputEvent, function(event) {
         let intersects = raycaster.intersectObjects(schildchenProberaum);
         if (intersects.length > 0) {
             let clickedLabel = intersects[0].object;
-            console.log(`Schild im Proberaum angeklickt: ${clickedLabel.name}`);
 
             // Schieberegler-UI anzeigen
             showPercentageUI(clickedLabel.name);
@@ -537,7 +536,6 @@ window.addEventListener(inputEvent, function(event) {
 
         // Grenzen aktualisieren
         aktuelleGrenzen = mischungsGrenzen[selectedMix];
-        console.log(`Ausgewählte Mischung: ${selectedMix}`);
 
         // Sieblinie aktualisieren
         aktualisiereSieblinie();

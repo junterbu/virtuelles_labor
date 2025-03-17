@@ -126,7 +126,6 @@ loader.load('Assets/Eimer.glb', function(gltf) {
     gltf.scene.traverse(function (child) {
         if (child.isMesh && child.name.startsWith('Cylinder') && currentEimerIndex < eimerPositionen.length) {  // Beispiel: Eimername beginnt mit "Eimer"
             eimerMeshes.push(child);
-            console.log(`Eimer gefunden: ${child.name}`);
             currentEimerIndex++;  
         }
     });
@@ -136,7 +135,6 @@ loader.load('Assets/Eimer.glb', function(gltf) {
         let label = createEimerLabel(eimer.name, eimer.position);
         schildchen.push(label);  // Füge das Schild zur Liste der klickbaren Objekte hinzu
         scene.add(label);  // Füge das Schild zur Szene hinzu
-        console.log(`Schild für ${eimer.name} erstellt und hinzugefügt`);
     });
 });
 
@@ -158,7 +156,6 @@ window.addEventListener(inputEvent, function(event) {
         let intersects = raycaster.intersectObjects(schildchen);
         if (intersects.length > 0) {
             let clickedLabel = intersects[0].object;
-            console.log(`Schild im Lager angeklickt: ${clickedLabel.name}`);
 
             // Logik zum Bewegen der Eimer
             moveToProberaum(schildchen.indexOf(clickedLabel), clickedLabel);

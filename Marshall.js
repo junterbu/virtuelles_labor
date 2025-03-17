@@ -46,8 +46,6 @@ function loadMarshallModel() {
                     if (child.isMesh) {
                         if (child.name === 'Button_on') {
                             buttonOn = child;
-                            console.log('Button "Button_on" gefunden:', buttonOn);
-                            console.log("button on: ", buttonOn.position)
                         
                             if (isMobileDevice()) {
                                 let hitboxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5); // Größere Hitbox
@@ -55,16 +53,12 @@ function loadMarshallModel() {
                                 let hitbox = new THREE.Mesh(hitboxGeometry, hitboxMaterial);
                                 hitbox.position.set(-8.33631535, 1, 1);
                                 scene.add(hitbox);
-                                console.log("Hitbox-Position:", hitbox.position);
-                                console.log("Hitbox ist Teil der Szene:", scene.children.includes(hitbox));
                                 buttonOn = hitbox; // WICHTIG: Ersetze buttonOn durch die Hitbox!
-                                console.log("Hitbox für buttonOn erstellt!");
                             }
                         }                        
                         if (child.name === 'Probekörper') {
                             probekörper = child;
                             probekörper.visible = false; // Standardmäßig unsichtbar
-                            console.log('Probekörper gefunden:', probekörper);
                         }
                     }
                 });
@@ -88,7 +82,6 @@ function loadMarshallModel() {
                         let intersects = raycaster.intersectObject(buttonOn, true);
 
                         if (intersects.length > 0) {
-                            console.log('Button "button_on" wurde angeklickt!');
                             playAnimation();
                             animate();
                             // generateExcelAfterMarshall();
@@ -129,7 +122,6 @@ function animate() {
             if (probekörper) {
                 if (currentFrame >= 115 && !probekörper.visible) {
                     probekörper.visible = true; // Sichtbar machen
-                    console.log('Probekörper ist jetzt sichtbar.');
                 }
             }
         }
@@ -167,12 +159,7 @@ function animate() {
                     raumdichten[i] = berechneRaumdichte(Rohdichten[i], eimerWerte, y[i], HFB);
                 }
             }
-            console.log(raumdichten)
-            console.log(Rohdichten)
-            console.log(bitumengehalt.map((b, i) => ({
-                x: b,
-                y: berechneMittelwerte(raumdichten)
-            })))
+
             context.clearRect(0, 0, canvas.width, canvas.height); // Lösche den alten Text
             context.font = '20px Arial'; // Kleinere Schrift für mehrere Werte
             let startX = 125;
@@ -277,7 +264,6 @@ export function berechneGroesstkorn(eimeraktuell) {
 let sol = 0
 
 function findPoint(Bx, By, bitumenAnteil) {
-    console.log("Bx:", Bx);
 
     let Ax = Bx - 1;
     let Ay = By - 0.05;
@@ -351,9 +337,7 @@ function berechneRaumdichte(rhoRM, eimerWerte, y, HFB) {
     let raumdichtenSet = [];
     for (let i = 0; i < 4; i++) {
         let H_bit = (hohlraumgehalt/100) - (HFB / 100) * (hohlraumgehalt/100);
-        console.log(H_bit)
         let rhoA = rhoRM - rhoRM * H_bit; // Berechnung der Raumdichte
-        console.log(rhoA)
         let rhoA_fitted = rhoA*y-Math.random()*0.01;
         raumdichtenSet.push(rhoA_fitted.toFixed(3));
     }

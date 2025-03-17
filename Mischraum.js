@@ -26,7 +26,6 @@ document.getElementById('bitumenRange').addEventListener('input', function() {
     bitumenAnteil = parseFloat(this.value);
     document.getElementById('bitumenValue').textContent = `${bitumenAnteil}%`;
 });
-console.log(bitumenAnteil)
 
 //Anzeige Rohdichte
 export let Rohdichten = [];  // Neue Variable für die Rohdichte
@@ -108,7 +107,6 @@ function berechneRohdichte() {
     let eimerWertFuller = eimerWerte['Füller'];
     let AF = (eimerWertFuller*(100-bitumenAnteil))/100;
     let AG = ((100-eimerWertFuller)*(100-bitumenAnteil))/100;
-    console.log(`this is: ${bitumenAnteil}`)
     let dichteGesamt = 100/((AF/dichteFuller)+(AG/dichteMaterial)+(bitumenAnteil/dichteBitumen))
 
     bitumengehalt.push(bitumenAnteil)
@@ -140,7 +138,6 @@ loader.load('Assets/Mixbutton.glb', function(loadedGltf) {
         if (child.isMesh) {
             if (child.name === "MixButton") {
                 mixButton = child;
-                console.log("MixButton gefunden:", mixButton); // Ausgabe zur Überprüfung
             }
         }
         if (isMobileDevice() && mixButton) {
@@ -187,7 +184,6 @@ window.addEventListener(inputEvent, function(event) {
             intersects = raycaster.intersectObjects([mixButton]);
         }
         if (intersects.length > 0) {
-            console.log("MixButton wurde angeklickt!");
             berechneRohdichte();
         }
     }

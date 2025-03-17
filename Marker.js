@@ -163,7 +163,6 @@ export async function zeigeQuiz(raum) {
         const beantworteteFragen = await getUserBeantworteteFragen(userId);
 
         if (!nutzerFragen.includes(raum) || beantworteteFragen.includes(raum)) {
-            console.log(`🚫 Raum ${raum} wurde bereits beantwortet oder gehört nicht zu den Nutzerfragen.`);
             resolve();
             return;
         }
@@ -221,7 +220,6 @@ export async function speicherePunkte(raum, auswahl) {
         beantworteteRäume: beantworteteRäume
     });
 
-    console.log(`Punkte gespeichert für ${userId}: ${quizPunkteNeu}`);
 }
 
 function schließeQuiz() {

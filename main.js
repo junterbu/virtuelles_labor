@@ -8,7 +8,6 @@ async function sendDataToServer(userId, data) {
     });
 
     const result = await response.json();
-    console.log(result);
 }
 
 export async function getUserData(userId) {

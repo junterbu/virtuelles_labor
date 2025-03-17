@@ -85,7 +85,6 @@ export function startARView() {
         renderer.render(scene, camera);
     });
 
-    console.log("AR-Ansicht gestartet.");
 }
 
 // // AR View für IOS
@@ -211,7 +210,6 @@ export function fromLagertoProberaum() {
             proberaumlagerMarker.visible = false;
         } else {
             // Animation beendet
-            console.log("Kamera hat den Proberaum erreicht.");
             leaveproberaumMarker.visible = true;
             proberaumlagerMarker.visible = true;
         }
@@ -266,7 +264,6 @@ export function fromProberaumtoLager() {
             proberaumlagerMarker.visible = false;
         } else {
             // Animation beendet
-            console.log("Kamera hat den Proberaum erreicht.");
             leaveproberaumMarker.visible = true;
         }
     }   
@@ -319,7 +316,6 @@ export function goToMischraum() {
             proberaumlagerMarker.visible = false;
         } else {
             // Animation beendet
-            console.log("Kamera hat den Proberaum erreicht.");
             leaveproberaumMarker.visible = true;
             
             const targetPosition = new THREE.Vector3(-8, 1.5, 7); // Neue Zielposition
@@ -423,10 +419,8 @@ export function toMarshall() {
             index++;
             setTimeout(() => requestAnimationFrame(animateAlongPath), 30);
         } else {
-            console.log("Kamera hat den Proberaum erreicht.");
             leaveMarshall.visible = true;
             // Animation beendet
-            console.log("Kamera hat den Proberaum erreicht.");
             leaveproberaumMarker.visible = true;
             
             const targetPosition = new THREE.Vector3(MarshallViewpoint.x, MarshallViewpoint.y, MarshallViewpoint.z); // Neue Zielposition
@@ -510,7 +504,6 @@ function updateQuality(level) {
             break;
     }
     dirLight1.shadow.needsUpdate = true; // Aktualisiere Schatten
-    console.log(`Renderqualität geändert: Level ${level}`);
 }
 
 window.addEventListener('resize', onWindowResize);
@@ -526,8 +519,6 @@ function onWindowResize() {
     // Renderer-Größe anpassen
     renderer.setSize(width, height);
     renderer.setPixelRatio(window.devicePixelRatio);
-
-    console.log(`Fenstergröße angepasst: ${width}x${height}`);
 }
 
 // Initiale Anpassung beim Start
