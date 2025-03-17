@@ -200,8 +200,6 @@ document.getElementById('percentRange').addEventListener('input', function() {
     // Sieblinie aktualisieren
     neueSieblinie = aktualisiereSieblinie();
 
-    console.log(neueSieblinie)
-
 });
 
 let sieblinien = {

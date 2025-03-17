@@ -395,6 +395,12 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
         });
     }
 
+   // Prüfen, ob die Punkte auf der Trendlinie liegen
+    bitumengehalt.forEach((b, i) => {
+        const y_check = a * b ** 2 + b * b + c;
+        console.log(`x: ${b}, y (Mittelwert): ${mittelwert[i]}, y (Trendlinie): ${y_check}`);
+    });
+    
     // Berechnung des optimalen Bindemittelgehalts
     function findOptimalBitumen(a, b, c) {
         const x_max = -b / (2 * a);
@@ -403,6 +409,12 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
     }
 
     let { x_max, y_max } = findOptimalBitumen(a, b, c);
+
+    mittelwert.forEach((y, i) => {
+        const x = bitumengehalt[i];
+        const y_predicted = a * x ** 2 + b * x + c;
+        console.log(`x: ${x}, Erwartet y: ${y}, Berechnet y: ${y_predicted}`);
+    });
 
     new Chart(ctx, {
         type: "scatter",
