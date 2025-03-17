@@ -454,6 +454,8 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
         pdf.text("Optimaler Bitumengehalt:", 10, startY);
         startY += 5;
         // pdf.addImage(image, "PNG", 10, startY, 180, 100); // falls Chart wieder einschalten
+        pdf.text("mittelwerte Raumdichten", 10, startY);
+        startY += 5;
         const mittelwerteHeaders = ["R1", "R2", "R3"];
         const mittelwertData = [mittelwert.flat()];
         pdf.autoTable({
