@@ -359,8 +359,6 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
 
     let mittelwert = berechneMittelwerte(raumdichten)
 
-    console.log("This is the:", mittelwert)
-
     function findPoint(raumdichten, bitumengehalt) {
         let Ax = bitumengehalt[0];
         let Bx = bitumengehalt[1];
@@ -389,7 +387,6 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
     const trendData = [];
     let [a,b,c] = findPoint(mittelwert, bitumengehalt);
 
-    console.log("this a:", a, "this b:", b, "this c:", c);
     for (let x = 3; x <= 7; x += 0.1) {
         trendData.push({
             x,
@@ -397,11 +394,6 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
         });
     }
 
-   // Prüfen, ob die Punkte auf der Trendlinie liegen
-    bitumengehalt.forEach((x, i) => {
-        const y_check = a * x ** 2 + x * b + c;
-        console.log(`x: ${x}, y (Mittelwert): ${mittelwert[i]}, y (Trendlinie): ${y_check}`);
-    });
 
     // Berechnung des optimalen Bindemittelgehalts
     function findOptimalBitumen(a, b, c) {
@@ -412,66 +404,65 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
 
     let { x_max, y_max } = findOptimalBitumen(a, b, c);
 
-    mittelwert.forEach((y, i) => {
-        const x = bitumengehalt[i];
-        const y_predicted = a * x ** 2 + b * x + c;
-        console.log(`x: ${x}, Erwartet y: ${y}, Berechnet y: ${y_predicted}`);
-    });
+    // const yMin = Math.min(...mittelwert) - 0.05;
+    // const yMax = Math.max(...mittelwert) + 0.05;
 
-    const yMin = Math.min(...mittelwert) - 0.05;
-    const yMax = Math.max(...mittelwert) + 0.05;
-
-    new Chart(ctx, {
-        type: "scatter",
-        data: {
-            datasets: [
-                {
-                    label: "Raumdichte [g/cm³]",
-                    data: bitumengehalt.map((b, i) => ({
-                        x: parseFloat(b),
-                        y: parseFloat(mittelwert[i]) // Sicherstellen, dass Y-Wert korrekt übergeben wird
-                    })),
-                    backgroundColor: "blue",
-                    pointRadius: 6
-                },
-                {
-                    label: "Trendlinie",
-                    data: trendData,
-                    borderColor: "grey",
-                    borderWidth: 3,
-                    borderDash: [1, 1], // Punktierte Linie
-                    fill: false,
-                    type: "line",
-                    pointRadius: 0
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: {
-                    title: { display: true, text: "Bitumengehalt [%]" },
-                    min: 3,
-                    max: 7
-                },
-                y: {
-                    title: { display: true, text: "Raumdichte [g/cm³]" },
-                    beginAtZero: false,
-                    min: yMin,
-                    max: yMax
-                }
-            }
-        }
-    });
+    // new Chart(ctx, {
+    //     type: "scatter",
+    //     data: {
+    //         datasets: [
+    //             {
+    //                 label: "Raumdichte [g/cm³]",
+    //                 data: bitumengehalt.map((b, i) => ({
+    //                     x: parseFloat(b),
+    //                     y: parseFloat(mittelwert[i]) // Sicherstellen, dass Y-Wert korrekt übergeben wird
+    //                 })),
+    //                 backgroundColor: "blue",
+    //                 pointRadius: 6
+    //             },
+    //             {
+    //                 label: "Trendlinie",
+    //                 data: trendData,
+    //                 borderColor: "grey",
+    //                 borderWidth: 3,
+    //                 borderDash: [1, 1], // Punktierte Linie
+    //                 fill: false,
+    //                 type: "line",
+    //                 pointRadius: 0
+    //             }
+    //         ]
+    //     },
+    //     options: {
+    //         scales: {
+    //             x: {
+    //                 title: { display: true, text: "Bitumengehalt [%]" },
+    //                 min: 3,
+    //                 max: 7
+    //             },
+    //             y: {
+    //                 title: { display: true, text: "Raumdichte [g/cm³]" },
+    //                 min: yMin,
+    //                 max: yMax
+    //             }
+    //         }
+    //     }
+    // });
 
     // Warten, bis der Chart gezeichnet wurde
     setTimeout(() => {
         const image = scatterCanvas.toDataURL("image/png");
         pdf.text("Optimaler Bitumengehalt:", 10, startY);
         startY += 5;
-        pdf.addImage(image, "PNG", 10, startY, 180, 100);
-        startY += 110; // Abstand unter dem Chart
+        // pdf.addImage(image, "PNG", 10, startY, 180, 100); // falls Chart wieder einschalten
+        const mittelwerteHeaders = ["R1", "R2", "R3"];
+        const mittelwertData = [mittelwert.flat()];
+        pdf.autoTable({
+            startY,
+            head: [mittelwerteHeaders],
+            body: mittelwertData,
+        });
+        startY = pdf.lastAutoTable.finalY + 10;
+        // startY += 110; // Abstand unter dem Chart
 
         // 🔥 Optimaler Bindemittelgehalt + Maximale Raumdichte direkt unter dem Grafen
         pdf.setFontSize(14);
