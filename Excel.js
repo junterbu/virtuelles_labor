@@ -359,6 +359,8 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
 
     let mittelwert = berechneMittelwerte(raumdichten)
 
+    console.log(mittelwert)
+
     function findPoint(raumdichten, bitumengehalt) {
         let Ax = bitumengehalt[0];
         let Bx = bitumengehalt[1];
@@ -533,7 +535,6 @@ async function saveLaborResults(userId, optimalerBitumengehalt, maximaleRaumdich
             body: JSON.stringify({ userId, punkte, optimalerBitumengehalt, maximaleRaumdichte })
         });
 
-        console.log(`✅ Labor-Ergebnisse für ${userId} gespeichert`);
     } catch (error) {
         console.error("❌ Fehler beim Speichern der Labor-Ergebnisse:", error);
     }

@@ -22,7 +22,6 @@ export async function getUserData(userId) {
             return {}; // Rückgabe eines leeren Objekts, um undefined zu vermeiden
         }
 
-        console.log("✅ Empfangene Benutzerdaten:", data);
         return data;
     } catch (error) {
         console.error("❌ Fehler beim Abrufen der Benutzerdaten:", error);
@@ -43,7 +42,6 @@ export async function sendQuizAnswer(userId, raum, auswahl) {
         }
 
         const result = await response.json();
-        console.log("✅ Quiz gespeichert:", result);
     } catch (error) {
         console.error("❌ Fehler in sendQuizAnswer:", error);
     }
@@ -55,7 +53,6 @@ export async function getUserQuizFragen(userId) {
         if (!response.ok) throw new Error("Fehler beim Abrufen der Quizfragen");
 
         const data = await response.json();
-        console.log("✅ Fragen für den Nutzer geladen:", data.fragen);
         return data.fragen;
     } catch (error) {
         console.error("❌ Fehler beim Abrufen der Fragen:", error);
@@ -69,7 +66,6 @@ export async function getUserBeantworteteFragen(userId) {
         if (!response.ok) throw new Error("Fehler beim Abrufen der beantworteten Fragen");
 
         const data = await response.json();
-        console.log("✅ Bereits beantwortete Fragen geladen:", data.ergebnisse);
 
         // Extrahiere die Räume aus den gespeicherten Quiz-Ergebnissen
         return data.ergebnisse.map(q => q.raum) || [];
