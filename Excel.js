@@ -173,12 +173,12 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
                         display: true, 
                         text: "Bitumengehalt [%]",
                         font: {
-                            size: 26 // Größere Schriftgröße für X-Achse
+                            size: 50 // Größere Schriftgröße für X-Achse
                         }
                     },
                     ticks: {
                         font: {
-                            size: 22 // Größere Wertebeschriftung auf der X-Achse
+                            size: 44 // Größere Wertebeschriftung auf der X-Achse
                         }
                     },
                     min: 3,
@@ -189,12 +189,12 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
                         display: true, 
                         text: "Raumdichte [g/cm³]",
                         font: {
-                            size: 26 // Größere Schriftgröße für Y-Achse
+                            size: 50 // Größere Schriftgröße für Y-Achse
                         }
                     },
                     ticks: {
                         font: {
-                            size: 22 // Größere Wertebeschriftung auf der Y-Achse
+                            size: 44 // Größere Wertebeschriftung auf der Y-Achse
                         }
                     },
                     min: 2.1,
