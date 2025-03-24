@@ -16,7 +16,7 @@ let raycaster = new THREE.Raycaster();
 let mouse = new THREE.Vector2();
 
 // Globale Variable für den Bitumenanteil und die Rohdichte
-export let bitumenAnteil = 0;
+export let bitumenAnteil = 3;
 let dichteMaterial = 2.82; // Beispielwert für die Dichte des Materials (in g/cm³)
 let dichteFuller = 2.73;
 export let dichteBitumen = 1.02; // Dichte von Bitumen (in g/cm³)
