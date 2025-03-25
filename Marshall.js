@@ -229,7 +229,7 @@ function getHohlraumgehalt(maxKorn) {
         updatePlaneText("kein Gestein ausgew.");
         return null;
     } else {
-        updatePlaneText("Marshall-Verdichter starten")
+        updatePlaneText("Marshall-Verdichter mit grünem Knopf starten")
     }
 
     // // Zufälligen Wert im Bereich +-0.5 hinzufügen
@@ -353,7 +353,7 @@ context.font = '40px Arial';
 context.fillStyle = 'white';
 context.textAlign = 'center';
 context.textBaseline = 'middle';
-context.fillText('Marshall-Verdichter starten', canvas.width / 2, canvas.height / 2);
+context.fillText('Marshall-Verdichter starten mit grünem Knopf starten', canvas.width / 2, canvas.height / 2);
 
 let texture = new THREE.CanvasTexture(canvas);
 let material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
@@ -421,7 +421,7 @@ function warteAufAnimation() {
 }
 
 document.getElementById('bitumenRange').addEventListener('input', () => {
-    updatePlaneText('Marshall-Verdichter starten');
+    updatePlaneText('Marshall-Verdichter mit grünem Knopf starten');
 });
 
 window.addEventListener('resize', () => {
