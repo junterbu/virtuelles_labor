@@ -164,6 +164,7 @@ async function starteDoppelQuiz() {
     if (!userId) return;
 
     const naechsteFragen = await getNextTwoQuestions(userId);
+    console.log(naechsteFragen)
     if (naechsteFragen.length > 0) await zeigeQuiz(naechsteFragen[0]);
     if (naechsteFragen.length > 1) {
         await new Promise(resolve => setTimeout(resolve, 700)); // Kurze Pause
@@ -171,7 +172,7 @@ async function starteDoppelQuiz() {
     }
 }
 
-console.log(naechsteFragen)
+
 
 export function fromLagertoProberaum() {
     currentRoom = "Gesteinsraum";
