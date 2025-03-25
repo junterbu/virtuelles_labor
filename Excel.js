@@ -207,8 +207,8 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
     // Warten, bis der Chart gezeichnet wurde
     setTimeout(() => {
         // const image = scatterCanvas.toDataURL("image/png");
-        // pdf.text("Optimaler Bitumengehalt:", 10, startY);
-        // startY += 5;
+        pdf.text("Optimaler Bitumengehalt:", 10, startY);
+        startY += 5;
         // pdf.addImage(image, "PNG", 10, startY, 180, 100);
 
         // // Entfernen des temporären Canvas
