@@ -349,11 +349,11 @@ let canvas = document.createElement('canvas');
 canvas.width = 768;
 canvas.height = 256;
 let context = canvas.getContext('2d');
-context.font = '40px Arial';
+context.font = '30px Arial';
 context.fillStyle = 'white';
 context.textAlign = 'center';
 context.textBaseline = 'middle';
-context.fillText('Marshall-Verdichter starten mit grünem Knopf starten', canvas.width / 2, canvas.height / 2);
+context.fillText('Gestein oder Bitumengehalt auswählen', canvas.width / 2, canvas.height / 2);
 
 let texture = new THREE.CanvasTexture(canvas);
 let material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
