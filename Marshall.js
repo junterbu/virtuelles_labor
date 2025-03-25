@@ -18,7 +18,7 @@ let animationMixer;
 let buttonOn; // Der Button aus der GLB-Datei
 let action; // Die Animation selbst
 let clock = new THREE.Clock(); // Uhr für präzise Delta-Zeit
-const FPS = 1; // Frame-Rate
+const FPS = 24; // Frame-Rate
 
 let probekörper; // Referenz auf das Objekt
 
@@ -39,7 +39,7 @@ function loadMarshallModel() {
                 // Setze die Animationseigenschaften
                 action.setLoop(THREE.LoopOnce); // Animation nur einmal abspielen
                 action.clampWhenFinished = true; // Animation hält an, wenn sie endet
-                action.timeScale = 1 / FPS; // Geschwindigkeit der Animation
+                action.timeScale = 24 / FPS; // Geschwindigkeit der Animation
 
                 // Suche nach dem Button "button_on" und dem Objekt "Probekörper" in der Szene
                 marshallModel.traverse((child) => {
