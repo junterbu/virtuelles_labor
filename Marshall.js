@@ -18,7 +18,7 @@ let animationMixer;
 let buttonOn; // Der Button aus der GLB-Datei
 let action; // Die Animation selbst
 let clock = new THREE.Clock(); // Uhr für präzise Delta-Zeit
-const FPS = 1; // Frame-Rate
+const FPS = 24; // Frame-Rate
 
 let probekörper; // Referenz auf das Objekt
 
@@ -395,7 +395,7 @@ async function playAnimation() {
         action.play();
 
         // Starte die zwei Quizfragen
-        await starteDoppelQuiz(); // Diese Funktion erstellen wir unten
+        await starteDoppelQuiz();
         
         // Warte auf das Ende der Animation
         await warteAufAnimation();
@@ -405,7 +405,6 @@ async function playAnimation() {
             generatePDFReportextern(selectedMix, eimerWerte, bitumengehalt, Rohdichten, raumdichten, canvasSieblinie);
             generatePDFReportintern(selectedMix, eimerWerte, bitumengehalt, Rohdichten, raumdichten, canvasSieblinie);
         }
-        
     }
 }
 
