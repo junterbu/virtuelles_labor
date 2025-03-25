@@ -169,10 +169,10 @@ async function starteDoppelQuiz() {
     if (naechsteFragen.length > 1) {
         await new Promise(resolve => setTimeout(resolve, 700)); // Kurze Pause
         await zeigeQuiz(naechsteFragen[1]);
-    }
-}
+    } return naechsteFragen
+} 
 
-
+console.log(naechsteFragen)
 
 export function fromLagertoProberaum() {
     currentRoom = "Gesteinsraum";
