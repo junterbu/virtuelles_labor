@@ -401,8 +401,11 @@ async function playAnimation() {
         await warteAufAnimation();
 
         // Erst dann PDF generieren
-        generatePDFReportextern(selectedMix, eimerWerte, bitumengehalt, Rohdichten, raumdichten, canvasSieblinie);
-        generatePDFReportintern(selectedMix, eimerWerte, bitumengehalt, Rohdichten, raumdichten, canvasSieblinie);
+        if (selectedMix != "Bitte klicken"){
+            generatePDFReportextern(selectedMix, eimerWerte, bitumengehalt, Rohdichten, raumdichten, canvasSieblinie);
+            generatePDFReportintern(selectedMix, eimerWerte, bitumengehalt, Rohdichten, raumdichten, canvasSieblinie);
+        }
+        
     }
 }
 
