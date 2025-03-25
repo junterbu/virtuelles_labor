@@ -145,74 +145,74 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
     });
     startY = pdf.lastAutoTable.finalY + 10;
 
-    // Scatterplot als Canvas generieren
-    const scatterCanvas = document.createElement("canvas");
-    scatterCanvas.width = 400;
-    scatterCanvas.height = 300;
-    document.body.appendChild(scatterCanvas);
+    // // Scatterplot als Canvas generieren
+    // const scatterCanvas = document.createElement("canvas");
+    // scatterCanvas.width = 400;
+    // scatterCanvas.height = 300;
+    // document.body.appendChild(scatterCanvas);
 
-    const ctx = scatterCanvas.getContext("2d");
+    // const ctx = scatterCanvas.getContext("2d");
 
-    new Chart(ctx, {
-        type: "scatter",
-        data: {
-        },
-        options: {
-            plugins: {
-                legend: {
-                    labels: {
-                        font: {
-                            size: 18 // Größere Schriftgröße für die Legende
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    title: { 
-                        display: true, 
-                        text: "Bitumengehalt [%]",
-                        font: {
-                            size: 50 // Größere Schriftgröße für X-Achse
-                        }
-                    },
-                    ticks: {
-                        font: {
-                            size: 44 // Größere Wertebeschriftung auf der X-Achse
-                        }
-                    },
-                    min: 3,
-                    max: 7
-                },
-                y: {
-                    title: { 
-                        display: true, 
-                        text: "Raumdichte [g/cm³]",
-                        font: {
-                            size: 50 // Größere Schriftgröße für Y-Achse
-                        }
-                    },
-                    ticks: {
-                        font: {
-                            size: 44 // Größere Wertebeschriftung auf der Y-Achse
-                        }
-                    },
-                    min: 2.1,
-                    max: 2.7
-                }
-            }
-        }
-    });
+    // new Chart(ctx, {
+    //     type: "scatter",
+    //     data: {
+    //     },
+    //     options: {
+    //         plugins: {
+    //             legend: {
+    //                 labels: {
+    //                     font: {
+    //                         size: 18 // Größere Schriftgröße für die Legende
+    //                     }
+    //                 }
+    //             }
+    //         },
+    //         scales: {
+    //             x: {
+    //                 title: { 
+    //                     display: true, 
+    //                     text: "Bitumengehalt [%]",
+    //                     font: {
+    //                         size: 50 // Größere Schriftgröße für X-Achse
+    //                     }
+    //                 },
+    //                 ticks: {
+    //                     font: {
+    //                         size: 44 // Größere Wertebeschriftung auf der X-Achse
+    //                     }
+    //                 },
+    //                 min: 3,
+    //                 max: 7
+    //             },
+    //             y: {
+    //                 title: { 
+    //                     display: true, 
+    //                     text: "Raumdichte [g/cm³]",
+    //                     font: {
+    //                         size: 50 // Größere Schriftgröße für Y-Achse
+    //                     }
+    //                 },
+    //                 ticks: {
+    //                     font: {
+    //                         size: 44 // Größere Wertebeschriftung auf der Y-Achse
+    //                     }
+    //                 },
+    //                 min: 2.1,
+    //                 max: 2.7
+    //             }
+    //         }
+    //     }
+    // });
 
     // Warten, bis der Chart gezeichnet wurde
     setTimeout(() => {
-        const image = scatterCanvas.toDataURL("image/png");
-        pdf.text("Optimaler Bitumengehalt:", 10, startY);
-        startY += 5;
-        pdf.addImage(image, "PNG", 10, startY, 180, 100);
+        // const image = scatterCanvas.toDataURL("image/png");
+        // pdf.text("Optimaler Bitumengehalt:", 10, startY);
+        // startY += 5;
+        // pdf.addImage(image, "PNG", 10, startY, 180, 100);
 
-        // Entfernen des temporären Canvas
-        document.body.removeChild(scatterCanvas);
+        // // Entfernen des temporären Canvas
+        // document.body.removeChild(scatterCanvas);
         // ---- Wechsel auf eine neue Seite für den Plot ----
         pdf.addPage();
         startY = 10;
