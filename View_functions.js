@@ -171,6 +171,8 @@ async function starteDoppelQuiz() {
     }
 }
 
+console.log(naechsteFragen)
+
 export function fromLagertoProberaum() {
     currentRoom = "Gesteinsraum";
     starteDoppelQuiz();
