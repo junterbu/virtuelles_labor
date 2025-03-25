@@ -6,7 +6,7 @@ import { isMobileDevice, scene } from './Allgemeines.js';
 import { lagerMarker, leaveproberaumMarker, proberaumlagerMarker, lagerproberaumMarker, toMischraumMarker, leaveMischraum, leavelagerMarker, toMarshallMarker, leaveMarshall, activeMarkers, markers} from "./Marker.js";
 import { VRButton } from 'three/addons/webxr/VRButton.js';
 import { zeigeQuiz, speicherePunkte, quizFragen, quizPunkte } from "./Marker.js";
-import { getUserQuizFragen, getNextTwoQuestions } from "./main.js";
+import { getUserQuizFragen, getNextTwoQuestions, getNextQuestions } from "./main.js";
 // Bestimmen Sie das Event basierend auf dem Gerät
 const inputEvent = isMobileDevice() ? 'touchstart' : 'click';
 
@@ -169,11 +169,8 @@ async function starteDoppelQuiz() {
     if (naechsteFragen.length > 1) {
         await new Promise(resolve => setTimeout(resolve, 700)); // Kurze Pause
         await zeigeQuiz(naechsteFragen[1]);
-    };
-    return naechsteFragen;
+    }
 } 
-
-console.log(naechsteFragen)
 
 export function fromLagertoProberaum() {
     currentRoom = "Gesteinsraum";
@@ -391,8 +388,9 @@ export function leaveView() {
     leaveMischraum.visible = false;
 }
 
-export function toMarshall() {
-    zeigeQuiz();
+export async  function toMarshall() {
+    const naechsteFragen = await getNextQuestions(userId);
+    zeigeQuiz(naechsteFragen[0]);
     // Wegpunkte vom Gesteinsraum ins Lager
     const points = [
         new THREE.Vector3(-8, 1.5, 7),    // Startpunkt
