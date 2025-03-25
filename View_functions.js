@@ -389,6 +389,8 @@ export function leaveView() {
 }
 
 export async  function toMarshall() {
+    const userId = localStorage.getItem("userId");
+    if (!userId) return;
     const naechsteFragen = await getNextQuestions(userId);
     zeigeQuiz(naechsteFragen[0]);
     // Wegpunkte vom Gesteinsraum ins Lager
