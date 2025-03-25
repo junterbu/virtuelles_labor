@@ -234,7 +234,7 @@ export async function generatePDFReportextern(mischgutName, eimerWerte, bitumeng
         startY = pdf.lastAutoTable.finalY + 10;
 
         pdf.setFontSize(14);
-        pdf.text(`Gesamtpunkte: ${quizPunkte} / 80`, 10, startY);
+        pdf.text(`Gesamtpunkte: ${quizPunkte} / 70`, 10, startY);
 
         // PDF speichern
         pdf.save(`Prüfbericht_${userId}.pdf`);
@@ -495,7 +495,7 @@ export async function generatePDFReportintern(mischgutName, eimerWerte, bitumeng
 
         startY = pdf.lastAutoTable.finalY + 10;
 
-        pdf.text(`Gesamtpunkte: ${quizPunkte} / 80`, 10, startY);
+        pdf.text(`Gesamtpunkte: ${quizPunkte} / 70`, 10, startY);
 
 
         // **📤 2. PDF speichern oder senden**

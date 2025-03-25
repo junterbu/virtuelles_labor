@@ -388,7 +388,7 @@ export function leaveView() {
 }
 
 export function toMarshall() {
-    starteDoppelQuiz();
+    zeigeQuiz();
     // Wegpunkte vom Gesteinsraum ins Lager
     const points = [
         new THREE.Vector3(-8, 1.5, 7),    // Startpunkt
