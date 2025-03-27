@@ -66,7 +66,7 @@ anleitungContext.textBaseline = 'middle';
 let textLines = [
     "Willkommen im virtuellen Labor!",
     "Klicken Sie auf die Gesteinskörnung (Schild),",
-    "um sie in den Gesteinsraum zu verschieben."
+    "um die Kübel in den Gesteinsraum zu verschieben."
 ];
 
 // Startposition und Zeilenabstand
