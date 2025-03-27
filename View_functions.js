@@ -266,6 +266,7 @@ export function fromProberaumtoLager() {
         } else {
             // Animation beendet
             leaveproberaumMarker.visible = true;
+            lagerproberaumMarker.visible = true;
         }
     }   
 

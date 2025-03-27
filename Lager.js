@@ -65,7 +65,7 @@ anleitungContext.textBaseline = 'middle';
 // Mehrzeiliger Text
 let textLines = [
     "Willkommen im virtuellen Labor!",
-    "Klicken Sie auf die Eimer,",
+    "Klicken Sie auf die Gesteinskörnung (Schild),",
     "um sie in den Gesteinsraum zu verschieben."
 ];
 
