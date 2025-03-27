@@ -54,7 +54,7 @@ export function createEimerLabel(eimerName, position) {
 
 // Anleitungsschild erstellen
 let anleitungCanvas = document.createElement('canvas');
-anleitungCanvas.width = 640;
+anleitungCanvas.width = 700;
 anleitungCanvas.height = 256;
 let anleitungContext = anleitungCanvas.getContext('2d');
 anleitungContext.fillStyle = 'white';
